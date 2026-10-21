@@ -1,0 +1,27 @@
+import { EyeSlash } from "@phosphor-icons/react/dist/ssr";
+import { GENDER_LABEL } from "@/components/shared";
+import type { Me } from "@/providers/auth-provider";
+
+/** What the app holds about you, and what other people actually see. */
+export function ProfileCard({ me }: { me: Me }) {
+  return (
+    <section className="rounded-card border-2 border-edge bg-surface p-6 shadow-sticker">
+      <p className="font-mono text-[13px] uppercase tracking-wide text-muted">Your username, private</p>
+      <p className="display mt-1 text-4xl">{me.username}</p>
+      <dl className="mt-5 grid grid-cols-2 gap-4 border-t-2 border-line pt-5">
+        <div>
+          <dt className="text-sm text-muted">Gender</dt>
+          <dd className="text-lg font-bold">{GENDER_LABEL[me.gender]}</dd>
+        </div>
+        <div>
+          <dt className="text-sm text-muted">Age</dt>
+          <dd className="text-lg font-bold">{me.age}</dd>
+        </div>
+      </dl>
+      <p className="mt-5 flex items-start gap-2 text-[15px] text-muted">
+        <EyeSlash aria-hidden weight="bold" className="mt-0.5 size-5 shrink-0" />
+        Others see only a random name, your gender and your age.
+      </p>
+    </section>
+  );
+}

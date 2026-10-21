@@ -1,0 +1,111 @@
+@import "tailwindcss";
+@import "../styles/tokens.css";
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-elevated: var(--elevated);
+  --color-line: var(--line);
+  --color-edge: var(--edge);
+  --color-ink: var(--ink);
+  --color-paper: var(--paper);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-brand: var(--brand);
+  --color-brand-fg: var(--brand-fg);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-pop: var(--pop);
+  --color-pop-fg: var(--pop-fg);
+  --color-accent-text: var(--accent-text);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-archivo), var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  /* Radii: pills for buttons and tags, 16px for inputs, 28px for cards and sheets. */
+  --radius-ui: 1rem;
+  --radius-card: 1.75rem;
+  /* The sticker shadow: solid, offset, no blur. */
+  --shadow-sticker: 4px 4px 0 0 var(--edge);
+  --shadow-sticker-sm: 2px 2px 0 0 var(--edge);
+  --text-hero: clamp(3rem, 6.4vw, 5.5rem);
+  --text-hero--line-height: 0.88;
+  --text-display: clamp(2.5rem, 7vw, 4.75rem);
+  --text-display--line-height: 0.95;
+}
+
+html {
+  background: var(--bg);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Headlines are set heavy and narrow, like a poster. */
+.display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 78%;
+  letter-spacing: -0.02em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Inputs stay at 16px so iOS Safari does not zoom the page on focus. */
+input, textarea, select { font-size: 16px; }
+::selection { background: var(--accent); color: var(--accent-fg); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Typing indicator: three square blocks that blink in turn. */
+@keyframes typing-block { 0%, 60%, 100% { opacity: 0.25; } 30% { opacity: 1; } }
+.typing-dot { animation: typing-block 1.2s steps(2, jump-none) infinite; }
+.typing-dot:nth-child(2) { animation-delay: 160ms; }
+.typing-dot:nth-child(3) { animation-delay: 320ms; }
+
+@keyframes skeleton-pulse { 50% { opacity: 0.5; } }
+.skeleton { animation: skeleton-pulse 1.6s ease-in-out infinite; }
+
+/* Searching state: a square that blinks like a cursor. */
+@keyframes cursor-blink { 50% { opacity: 0; } }
+.cursor-blink { animation: cursor-blink 1s steps(1) infinite; }
+
+/* Sheets and dialogs. Opacity and transform only. */
+@keyframes sheet-fade { from { opacity: 0; } }
+@keyframes sheet-rise { from { transform: translateY(100%); } }
+@keyframes dialog-pop { from { opacity: 0; transform: translate(-50%, -48%); } }
+.sheet-overlay[data-state="open"] { animation: sheet-fade 0.2s ease-out; }
+.sheet-content[data-state="open"] { animation: sheet-rise 0.3s cubic-bezier(0.32, 0.72, 0, 1); }
+@media (min-width: 768px) {
+  .sheet-content[data-state="open"] { animation: dialog-pop 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
+}
+
+/* Live ticker: slides left forever. Two copies of the content, so it loops with no jump. */
+@keyframes ticker { to { transform: translateX(-50%); } }
+.ticker-track { animation: ticker 40s linear infinite; }
+.ticker:hover .ticker-track { animation-play-state: paused; }
+
+/* Stickers tilt a little when you touch them. */
+@keyframes wiggle { 0%, 100% { transform: rotate(var(--tilt, 0deg)); } 35% { transform: rotate(calc(var(--tilt, 0deg) + 3deg)); } 70% { transform: rotate(calc(var(--tilt, 0deg) - 2deg)); } }
+.sticker { transform: rotate(var(--tilt, 0deg)); transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
+.sticker:hover { animation: wiggle 0.5s ease-in-out; }

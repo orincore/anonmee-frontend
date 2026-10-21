@@ -1,0 +1,111 @@
+"use client";
+
+import { useCallback, useEffect, useRef, useState } from "react";
+import { EV, type ChatMessage } from "@/contracts";
+import { lastSeq, lineFromMessage, mergeLines, previewOfLine, toggleReaction, type ChatLine } from "@/components/shared/chat-line";
+import { emitAck } from "@/lib/socket";
+import { useSocket } from "@/providers/socket-provider";
+
+interface JoinAck { alias: string; messages: ChatMessage[]; hasMore: boolean }
+const PAGE = 50;
+
+/**
+ * A group room or the global room. Joins on connect, shows recent history, loads earlier pages as you scroll up,
+ * sends, replies and reacts with instant feedback, and after a dropped connection asks for exactly what it missed.
+ */
+export function useRoom(roomId: string, enabled: boolean) {
+  const { socket } = useSocket();
+  const [lines, setLines] = useState<ChatLine[]>([]);
+  const [you, setYou] = useState<string>();
+  const [hasMore, setHasMore] = useState(false);
+  const [loadingOlder, setLoadingOlder] = useState(false);
+  const [error, setError] = useState<string>();
+  const linesRef = useRef(lines);
+  const youRef = useRef<string>(undefined);
+
+  useEffect(() => {
+    linesRef.current = lines;
+  }, [lines]);
+
+  const toLine = useCallback((m: ChatMessage) => lineFromMessage(m, youRef.current ?? ""), []);
+
+  const join = useCallback(async () => {
+    if (!socket || !enabled) return;
+    const seq = lastSeq(linesRef.current);
+    const r = await emitAck<JoinAck>(socket, EV.roomJoin, seq ? { roomId, lastSeq: seq } : { roomId });
+    if (!r.ok) return setError(r.message);
+    youRef.current = r.alias;
+    setYou(r.alias);
+    setError(undefined);
+    setLines((p) => mergeLines(p, r.messages.map(toLine)));
+    if (!seq) setHasMore(r.hasMore);
+  }, [socket, enabled, roomId, toLine]);
+
+  useEffect(() => {
+    if (!socket || !enabled) return;
+    void join();
+    const onMessage = (m: ChatMessage) => m.roomId === roomId && setLines((p) => mergeLines(p, [toLine(m)]));
+    const onReactions = (d: { roomId: string; messageId: string; reactions: Record<string, number> }) =>
+      d.roomId === roomId && setLines((p) => p.map((l) => (l.id === d.messageId ? { ...l, reactions: d.reactions } : l)));
+    socket.on(EV.roomMessage, onMessage).on(EV.roomReactions, onReactions).on("connect", join);
+    return () => {
+      socket.off(EV.roomMessage, onMessage).off(EV.roomReactions, onReactions).off("connect", join);
+      void emitAck(socket, EV.roomLeave, { roomId });
+    };
+  }, [socket, enabled, roomId, join, toLine]);
+
+  const loadOlder = useCallback(async () => {
+    const first = linesRef.current.find((l) => l.seq !== undefined)?.seq;
+    if (!socket || !first || loadingOlder) return;
+    setLoadingOlder(true);
+    const r = await emitAck<{ messages: ChatMessage[]; hasMore: boolean }>(socket, EV.roomHistory, { roomId, beforeSeq: first, limit: PAGE });
+    if (r.ok) {
+      setLines((p) => mergeLines(p, r.messages.map(toLine)));
+      setHasMore(r.hasMore);
+    }
+    setLoadingOlder(false);
+  }, [socket, roomId, loadingOlder, toLine]);
+
+  const transmit = useCallback(
+    async (key: string, text: string, replyToId?: string) => {
+      if (!socket) return;
+      const r = await emitAck<{ seq?: number; id?: string }>(socket, EV.roomMessage, { roomId, clientMsgId: key, text, ...(replyToId ? { replyToId } : {}) });
+      setLines((p) => p.map((l) => (l.key === key ? { ...l, status: r.ok ? "sent" : "failed", seq: r.ok ? (r.seq ?? l.seq) : l.seq, id: r.ok ? (r.id || l.id) : l.id } : l)));
+    },
+    [socket, roomId],
+  );
+
+  const send = useCallback(
+    (text: string, replyTo?: ChatLine) => {
+      if (!youRef.current) return;
+      const key = crypto.randomUUID();
+      const line: ChatLine = { key, alias: youRef.current, gender: "prefer_not_to_say", age: 18, text, at: Date.now(), own: true, status: "sending", replyTo: replyTo?.id ? previewOfLine(replyTo) : undefined };
+      setLines((p) => mergeLines(p, [line]));
+      void transmit(key, text, replyTo?.id);
+    },
+    [transmit],
+  );
+
+  const retry = useCallback(
+    (key: string) => {
+      const l = linesRef.current.find((x) => x.key === key);
+      if (!l) return;
+      setLines((p) => p.map((x) => (x.key === key ? { ...x, status: "sending" } : x)));
+      void transmit(key, l.text, l.replyTo?.id);
+    },
+    [transmit],
+  );
+
+  const react = useCallback(
+    async (line: ChatLine, emoji: string) => {
+      if (!socket || !line.id) return;
+      const on = !line.mine?.includes(emoji);
+      setLines((p) => p.map((l) => (l.key === line.key ? toggleReaction(l, emoji, on) : l)));
+      const r = await emitAck(socket, EV.roomReact, { roomId, messageId: line.id, emoji });
+      if (!r.ok) setLines((p) => p.map((l) => (l.key === line.key ? toggleReaction(l, emoji, !on) : l)));
+    },
+    [socket, roomId],
+  );
+
+  return { lines, you, hasMore, loadingOlder, error, loadOlder, send, retry, react };
+}

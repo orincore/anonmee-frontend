@@ -1,0 +1,62 @@
+/*
+ * Anonme design tokens. Direction: loud, playful sticker sheet.
+ * Three colours with fixed jobs: cobalt is the brand surface, peach is the action, coral-rose is the highlight.
+ * Everything wears an outline and a hard offset shadow, like a sticker. No blur, no glow, no gradients.
+ * Never pure black or pure white.
+ */
+:root {
+  color-scheme: light;
+  --bg: #f4f4f8;
+  --surface: #fbfbfd;
+  --elevated: #e8e8f1;
+  --fg: #14111c;
+  --muted: #595666; /* 6.9:1 on --bg */
+  --line: rgb(20 17 28 / 0.16);
+  --edge: #14111c; /* outlines and hard shadows */
+  --brand: #3b4bff; /* cobalt: hero and call to action bands */
+  --brand-fg: #f6f7ff;
+  --accent: #ffa07e; /* peach: the main action, live things */
+  --accent-fg: #14111c;
+  --pop: #ff6b8b; /* coral-rose: highlights, stamps, reactions */
+  --pop-fg: #14111c;
+  --accent-text: #b93c1c; /* peach family used as text on --bg, 5.6:1 */
+  --danger: #d6342c;
+  --success: #0e8f5f;
+  --ring: #3b4bff;
+  /* Fixed colours that do not flip with the theme, for bands that are always dark or light. */
+  --ink: #14111c;
+  --paper: #f4f3fa;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #14111c;
+  --surface: #1e1a29;
+  --elevated: #2a2538;
+  --fg: #f4f3fa;
+  --muted: #a9a5b8; /* 7.4:1 on --bg */
+  --line: rgb(244 243 250 / 0.18);
+  --edge: #f4f3fa;
+  --accent-text: #ffb59b; /* peach on ink, 10:1 */
+  --danger: #ff6b5e;
+  --success: #4be3a0;
+  --ring: #ffb59b;
+}
+
+/* Follow the system until the person picks a theme. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --bg: #14111c;
+    --surface: #1e1a29;
+    --elevated: #2a2538;
+    --fg: #f4f3fa;
+    --muted: #a9a5b8;
+    --line: rgb(244 243 250 / 0.18);
+    --edge: #f4f3fa;
+    --accent-text: #ffb59b;
+    --danger: #ff6b5e;
+    --success: #4be3a0;
+    --ring: #ffb59b;
+  }
+}
