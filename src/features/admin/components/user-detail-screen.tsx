@@ -16,7 +16,22 @@ interface Detail {
     acquisition: { channel: string | null; source: string | null; campaign: string | null };
     preferences: { intents: Intent[]; wantGenders: Gender[]; minAge: number; maxAge: number; interests: string[] } | null;
     counts: Record<string, number>;
+    activity?: {
+      totalScreenTimeSeconds: number;
+      todayScreenTimeSeconds: number;
+      todayMessagesSent: number;
+    };
   };
+}
+
+function formatDuration(seconds: number): string {
+  if (!seconds || seconds <= 0) return "0m";
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  if (hours > 0) {
+    return `${hours}h ${minutes}m`;
+  }
+  return `${minutes}m`;
 }
 
 const COUNT_LABELS: Record<string, string> = { matches: "Matches", blocksGiven: "Blocked others", blocksReceived: "Blocked by others", reportsMade: "Reports made", reportsReceived: "Reports received", groupsOwned: "Groups started", activeSessions: "Signed-in devices" };
@@ -68,6 +83,13 @@ export function UserDetailScreen({ id }: { id: string }) {
             <Field label="Here for">{u.preferences.intents.map((i) => INTENT_LABELS[i]).join(", ")}</Field>
             <Field label="Wants to meet">{u.preferences.wantGenders.map((g) => GENDER_LABEL[g]).join(", ")}, ages {u.preferences.minAge} to {u.preferences.maxAge}</Field>
             <Field label="Topics">{u.preferences.interests.join(", ") || "none"}</Field>
+          </>
+        ) : null}
+        {u.activity ? (
+          <>
+            <Field label="Screen time (total)">{formatDuration(u.activity.totalScreenTimeSeconds)}</Field>
+            <Field label="Screen time (today)">{formatDuration(u.activity.todayScreenTimeSeconds)}</Field>
+            <Field label="Messages sent (today)">{u.activity.todayMessagesSent}</Field>
           </>
         ) : null}
         {Object.entries(u.counts).map(([k, v]) => <Field key={k} label={COUNT_LABELS[k] ?? k}>{v}</Field>)}

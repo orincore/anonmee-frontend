@@ -24,5 +24,6 @@ export * from "./report-sheet";
 export * from "./redaction-bar";
 export * from "./section-heading";
 export * from "./simple-table";
+export * from "./screen-time-tracker";
 export * from "./theme-toggle";
 export * from "./typing-dots";

@@ -1,6 +1,6 @@
 "use client";
 
-import { ChartBar, Flag, ListChecks, Megaphone, SignOut, TrendUp, UsersThree } from "@phosphor-icons/react";
+import { ChartBar, Clock, Flag, ListChecks, Megaphone, SignOut, TrendUp, UsersThree } from "@phosphor-icons/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Logo, ThemeToggle } from "@/components/shared";
@@ -13,6 +13,7 @@ const ITEMS = [
   { href: "/admin", label: "Overview", icon: ChartBar, roles: ["owner", "moderator", "analyst"] },
   { href: "/admin/escalations", label: "Escalations", icon: Flag, roles: ["owner", "moderator"] },
   { href: "/admin/users", label: "Users", icon: UsersThree, roles: ["owner", "moderator"] },
+  { href: "/admin/activity", label: "Screen Time", icon: Clock, roles: ["owner", "moderator", "analyst"] },
   { href: "/admin/analytics", label: "Traffic", icon: TrendUp, roles: ["owner", "moderator", "analyst"] },
   { href: "/admin/campaigns", label: "Campaigns", icon: Megaphone, roles: ["owner", "moderator", "analyst"] },
   { href: "/admin/audit", label: "Audit log", icon: ListChecks, roles: ["owner"] },

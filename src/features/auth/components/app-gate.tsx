@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { AppShell } from "@/components/layout/app-shell";
-import { ErrorState } from "@/components/shared";
+import { ErrorState, ScreenTimeTracker } from "@/components/shared";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChromeProvider } from "@/providers/chrome-provider";
 import { SocketProvider } from "@/providers/socket-provider";
@@ -38,6 +38,7 @@ export function AppGate({ children }: { children: React.ReactNode }) {
     <SocketProvider>
       <UnreadProvider>
         <ChromeProvider>
+          <ScreenTimeTracker />
           <AppShell>{children}</AppShell>
         </ChromeProvider>
       </UnreadProvider>
