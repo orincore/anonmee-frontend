@@ -16,12 +16,6 @@ export default function manifest(): MetadataRoute.Manifest {
     orientation: "portrait-primary",
     icons: [
       {
-        src: "/anonme-logo.png",
-        sizes: "1254x1254",
-        type: "image/png",
-        purpose: "any",
-      },
-      {
         src: "/icon-512.png",
         sizes: "512x512",
         type: "image/png",
@@ -30,6 +24,18 @@ export default function manifest(): MetadataRoute.Manifest {
       {
         src: "/icon-192.png",
         sizes: "192x192",
+        type: "image/png",
+        purpose: "any",
+      },
+      {
+        src: "/icon-144.png",
+        sizes: "144x144",
+        type: "image/png",
+        purpose: "any",
+      },
+      {
+        src: "/favicon-48x48.png",
+        sizes: "48x48",
         type: "image/png",
         purpose: "any",
       },

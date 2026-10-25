@@ -26,6 +26,17 @@ export default function robots(): MetadataRoute.Robots {
     "/llms-full.txt",
     "/opensearch.xml",
     "/manifest.webmanifest",
+    "/favicon.ico",
+    "/favicon-48x48.png",
+    "/favicon-32x32.png",
+    "/icon-96.png",
+    "/icon-144.png",
+    "/icon-192.png",
+    "/icon-512.png",
+    "/icon.svg",
+    "/apple-icon.png",
+    "/anonme-logo.png",
+    "/anonmee-logo-white.png",
   ];
 
   return {
@@ -34,6 +45,11 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: "*",
         allow: publicPaths,
         disallow: disallowed,
+      },
+      // Googlebot-Image fetches site favicons and images for Google Search results
+      {
+        userAgent: "Googlebot-Image",
+        allow: ["/", "/*"],
       },
       // Explicitly allow major AI search engines and answer engines
       {
