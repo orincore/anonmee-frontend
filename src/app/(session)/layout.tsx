@@ -6,6 +6,7 @@ import { AuthProvider } from "@/providers/auth-provider";
  * like a single-page app. That is why this segment opts out of Next's instant-navigation check, which
  * would otherwise report the signed-in pages as "dropped" on every visit.
  */
+export const dynamic = "force-dynamic";
 export const instant = false;
 
 // Everything that needs to know who is signed in lives under this layout. Public pages stay outside it.
