@@ -9,50 +9,103 @@ import { useSocket } from "@/providers/socket-provider";
 interface JoinAck { alias: string; messages: ChatMessage[]; hasMore: boolean }
 const PAGE = 50;
 
+interface RoomCacheEntry {
+  lines: ChatLine[];
+  you?: string;
+  hasMore: boolean;
+}
+
+const roomCache = new Map<string, RoomCacheEntry>();
+
 /**
  * A group room or the global room. Joins on connect, shows recent history, loads earlier pages as you scroll up,
  * sends, replies and reacts with instant feedback, and after a dropped connection asks for exactly what it missed.
  */
 export function useRoom(roomId: string, enabled: boolean) {
-  const { socket } = useSocket();
-  const [lines, setLines] = useState<ChatLine[]>([]);
-  const [you, setYou] = useState<string>();
-  const [hasMore, setHasMore] = useState(false);
+  const { socket, connected } = useSocket();
+  const cached = roomCache.get(roomId);
+  const [lines, setLines] = useState<ChatLine[]>(() => cached?.lines ?? []);
+  const [you, setYou] = useState<string | undefined>(() => cached?.you);
+  const [hasMore, setHasMore] = useState(() => cached?.hasMore ?? false);
   const [loadingOlder, setLoadingOlder] = useState(false);
   const [error, setError] = useState<string>();
   const linesRef = useRef(lines);
-  const youRef = useRef<string>(undefined);
+  const youRef = useRef<string | undefined>(cached?.you);
+  const joiningRef = useRef(false);
 
   useEffect(() => {
     linesRef.current = lines;
-  }, [lines]);
+    roomCache.set(roomId, {
+      lines,
+      you: youRef.current,
+      hasMore,
+    });
+  }, [lines, roomId, hasMore]);
 
   const toLine = useCallback((m: ChatMessage) => lineFromMessage(m, youRef.current ?? ""), []);
 
   const join = useCallback(async () => {
-    if (!socket || !enabled) return;
-    const seq = lastSeq(linesRef.current);
-    const r = await emitAck<JoinAck>(socket, EV.roomJoin, seq ? { roomId, lastSeq: seq } : { roomId });
-    if (!r.ok) return setError(r.message);
-    youRef.current = r.alias;
-    setYou(r.alias);
-    setError(undefined);
-    setLines((p) => mergeLines(p, r.messages.map(toLine)));
-    if (!seq) setHasMore(r.hasMore);
-  }, [socket, enabled, roomId, toLine]);
+    if (!socket || !enabled || joiningRef.current) return;
+    joiningRef.current = true;
+    try {
+      const seq = lastSeq(linesRef.current);
+      const r = await emitAck<JoinAck>(socket, EV.roomJoin, seq ? { roomId, lastSeq: seq } : { roomId });
+      if (!r.ok) {
+        if (linesRef.current.length === 0) {
+          setError(r.message);
+        }
+        return;
+      }
+      youRef.current = r.alias;
+      setYou(r.alias);
+      setError(undefined);
+      setLines((p) => {
+        const merged = mergeLines(p, r.messages.map(toLine));
+        roomCache.set(roomId, { lines: merged, you: r.alias, hasMore: !seq ? r.hasMore : hasMore });
+        return merged;
+      });
+      if (!seq) setHasMore(r.hasMore);
+    } finally {
+      joiningRef.current = false;
+    }
+  }, [socket, enabled, roomId, toLine, hasMore]);
 
   useEffect(() => {
     if (!socket || !enabled) return;
-    void join();
-    const onMessage = (m: ChatMessage) => m.roomId === roomId && setLines((p) => mergeLines(p, [toLine(m)]));
-    const onReactions = (d: { roomId: string; messageId: string; reactions: Record<string, number> }) =>
-      d.roomId === roomId && setLines((p) => p.map((l) => (l.id === d.messageId ? { ...l, reactions: d.reactions } : l)));
-    socket.on(EV.roomMessage, onMessage).on(EV.roomReactions, onReactions).on("connect", join);
-    return () => {
-      socket.off(EV.roomMessage, onMessage).off(EV.roomReactions, onReactions).off("connect", join);
-      void emitAck(socket, EV.roomLeave, { roomId });
+
+    if (connected) {
+      void join();
+    }
+
+    const onConnect = () => {
+      void join();
     };
-  }, [socket, enabled, roomId, join, toLine]);
+
+    const onMessage = (m: ChatMessage) => {
+      if (m.roomId === roomId) {
+        setLines((p) => mergeLines(p, [toLine(m)]));
+      }
+    };
+
+    const onReactions = (d: { roomId: string; messageId: string; reactions: Record<string, number> }) => {
+      if (d.roomId === roomId) {
+        setLines((p) => p.map((l) => (l.id === d.messageId ? { ...l, reactions: d.reactions } : l)));
+      }
+    };
+
+    socket.on(EV.roomMessage, onMessage);
+    socket.on(EV.roomReactions, onReactions);
+    socket.on("connect", onConnect);
+
+    return () => {
+      socket.off(EV.roomMessage, onMessage);
+      socket.off(EV.roomReactions, onReactions);
+      socket.off("connect", onConnect);
+      if (roomId !== "global") {
+        void emitAck(socket, EV.roomLeave, { roomId }).catch(() => {});
+      }
+    };
+  }, [socket, connected, enabled, roomId, join, toLine]);
 
   const loadOlder = useCallback(async () => {
     const first = linesRef.current.find((l) => l.seq !== undefined)?.seq;
@@ -77,13 +130,17 @@ export function useRoom(roomId: string, enabled: boolean) {
 
   const send = useCallback(
     (text: string, replyTo?: ChatLine) => {
-      if (!youRef.current) return;
+      const alias = youRef.current ?? you;
+      if (!alias) {
+        void join();
+        return;
+      }
       const key = crypto.randomUUID();
-      const line: ChatLine = { key, alias: youRef.current, gender: "prefer_not_to_say", age: 18, text, at: Date.now(), own: true, status: "sending", replyTo: replyTo?.id ? previewOfLine(replyTo) : undefined };
+      const line: ChatLine = { key, alias, gender: "prefer_not_to_say", age: 18, text, at: Date.now(), own: true, status: "sending", replyTo: replyTo?.id ? previewOfLine(replyTo) : undefined };
       setLines((p) => mergeLines(p, [line]));
       void transmit(key, text, replyTo?.id);
     },
-    [transmit],
+    [transmit, you, join],
   );
 
   const retry = useCallback(
@@ -107,5 +164,10 @@ export function useRoom(roomId: string, enabled: boolean) {
     [socket, roomId],
   );
 
-  return { lines, you, hasMore, loadingOlder, error, loadOlder, send, retry, react };
+  const rejoin = useCallback(() => {
+    setError(undefined);
+    void join();
+  }, [join]);
+
+  return { lines, you, hasMore, loadingOlder, error, loadOlder, send, retry, react, rejoin };
 }
