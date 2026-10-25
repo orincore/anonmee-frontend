@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import { RoomScreen } from "@/features/groups/components/room-screen";
 
 // Signed-in screens load on the client, so there is nothing for Next to pre-render. See (session)/layout.tsx.
@@ -9,7 +11,16 @@ export const metadata: Metadata = {
   twitter: null,
 };
 
-export default async function RoomPage({ params }: { params: Promise<{ id: string }> }) {
+async function DynamicRoom({ params }: { params: Promise<{ id: string }> }) {
+  await connection();
   const { id } = await params;
   return <RoomScreen id={id} />;
+}
+
+export default function RoomPage({ params }: { params: Promise<{ id: string }> }) {
+  return (
+    <Suspense fallback={null}>
+      <DynamicRoom params={params} />
+    </Suspense>
+  );
 }

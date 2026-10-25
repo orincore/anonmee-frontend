@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import { UserDetailScreen } from "@/features/admin/components/user-detail-screen";
 
 export const instant = false;
@@ -8,7 +10,16 @@ export const metadata: Metadata = {
   twitter: null,
 };
 
-export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+async function DynamicUserDetail({ params }: { params: Promise<{ id: string }> }) {
+  await connection();
   const { id } = await params;
   return <UserDetailScreen id={id} />;
+}
+
+export default function Page({ params }: { params: Promise<{ id: string }> }) {
+  return (
+    <Suspense fallback={null}>
+      <DynamicUserDetail params={params} />
+    </Suspense>
+  );
 }
