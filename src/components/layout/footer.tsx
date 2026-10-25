@@ -5,6 +5,8 @@ const GROUPS = [
   {
     title: "Chat & Match",
     links: [
+      { href: "/global-chat", label: "Global Chat (Live 24/7)" },
+      { href: "/groups", label: "Anonymous Groups Directory" },
       { href: "/topics/dating", label: "Anonymous Dating" },
       { href: "/topics/friendship", label: "Make Real Friends" },
       { href: "/topics/stranger-chat", label: "Talk to Strangers" },

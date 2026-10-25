@@ -3,6 +3,8 @@ import { Logo, ThemeToggle } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 
 const LINKS = [
+  { href: "/global-chat", label: "Global Chat" },
+  { href: "/groups", label: "Groups" },
   { href: "/#how-it-works", label: "How it works" },
   { href: "/for", label: "Communities" },
   { href: "/locations", label: "Locations" },

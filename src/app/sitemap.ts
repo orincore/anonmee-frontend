@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next";
 import { AUDIENCES } from "@/lib/audiences";
 import { LOCATIONS } from "@/lib/locations";
+import { getPublicGroups } from "@/lib/public-groups";
 import { SITE } from "@/lib/site";
 import { TOPICS } from "@/lib/topics";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
   // Root landing page
@@ -14,6 +15,42 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "daily",
     priority: 1.0,
   };
+
+  // High-priority Global Chat & Groups hub
+  const globalChatEntry: MetadataRoute.Sitemap[number] = {
+    url: `${SITE.url}/global-chat`,
+    lastModified: now,
+    changeFrequency: "daily",
+    priority: 0.95,
+  };
+
+  const groupsIndexEntry: MetadataRoute.Sitemap[number] = {
+    url: `${SITE.url}/groups`,
+    lastModified: now,
+    changeFrequency: "daily",
+    priority: 0.9,
+  };
+
+  const globalRoomEntry: MetadataRoute.Sitemap[number] = {
+    url: `${SITE.url}/groups/global`,
+    lastModified: now,
+    changeFrequency: "daily",
+    priority: 0.95,
+  };
+
+  // Dynamic user-created public groups
+  let groupEntries: MetadataRoute.Sitemap = [];
+  try {
+    const publicGroups = await getPublicGroups({ limit: 100 });
+    groupEntries = publicGroups.map((g) => ({
+      url: `${SITE.url}/groups/${g.id}`,
+      lastModified: new Date(g.createdAt),
+      changeFrequency: "daily" as const,
+      priority: 0.8,
+    }));
+  } catch {
+    groupEntries = [];
+  }
 
   // High-priority core topic pages
   const topicEntries: MetadataRoute.Sitemap = TOPICS.map((t) => {
@@ -75,6 +112,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     rootEntry,
+    globalChatEntry,
+    groupsIndexEntry,
+    globalRoomEntry,
+    ...groupEntries,
     ...topicEntries,
     locationIndex,
     ...locationEntries,

@@ -26,4 +26,5 @@ export * from "./section-heading";
 export * from "./simple-table";
 export * from "./screen-time-tracker";
 export * from "./theme-toggle";
+export * from "./breadcrumbs";
 export * from "./typing-dots";

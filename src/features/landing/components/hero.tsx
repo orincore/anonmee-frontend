@@ -33,12 +33,20 @@ export function Hero() {
             <span className="rounded-full border border-ink bg-surface px-3 py-1 text-fg shadow-sticker-sm">Stranger Chat</span>
             <span className="rounded-full border border-ink bg-accent px-3 py-1 shadow-sticker-sm">Zero Photo Bias</span>
           </div>
-          <Button asChild size="lg" className="w-full border-ink shadow-[4px_4px_0_0_var(--ink)] hover:shadow-[6px_6px_0_0_var(--ink)] sm:w-auto">
-            <Link href="/signup">
-              Start chatting
-              <ArrowRight aria-hidden weight="bold" className="size-5" />
-            </Link>
-          </Button>
+          <div className="flex flex-wrap items-center gap-3 pt-2">
+            <Button asChild size="lg" className="w-full border-ink shadow-[4px_4px_0_0_var(--ink)] hover:shadow-[6px_6px_0_0_var(--ink)] sm:w-auto">
+              <Link href="/signup">
+                Start chatting
+                <ArrowRight aria-hidden weight="bold" className="size-5" />
+              </Link>
+            </Button>
+            <Button asChild variant="secondary" size="lg" className="w-full sm:w-auto">
+              <Link href="/global-chat">Global Chat (24/7)</Link>
+            </Button>
+            <Button asChild variant="pop" size="lg" className="w-full sm:w-auto">
+              <Link href="/groups">Browse Groups</Link>
+            </Button>
+          </div>
         </div>
         <FloatingStickers>
           <PhoneFrame className="rotate-3">
