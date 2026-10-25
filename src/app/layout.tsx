@@ -13,12 +13,6 @@ export const metadata: Metadata = {
   title: { default: SITE.title, template: `%s | ${SITE.name}` },
   description: SITE.description,
   applicationName: SITE.name,
-  keywords: [...SITE.keywords],
-  category: SITE.category,
-  classification: "Dating, Friendship, Anonymous Social Network",
-  creator: SITE.name,
-  publisher: SITE.name,
-  authors: [{ name: SITE.name, url: SITE.url }],
   icons: {
     icon: [
       { url: "/icon.svg", type: "image/svg+xml" },
@@ -27,44 +21,7 @@ export const metadata: Metadata = {
     apple: "/apple-icon.png",
   },
   manifest: "/manifest.webmanifest",
-  openGraph: {
-    type: "website",
-    siteName: SITE.name,
-    title: SITE.title,
-    description: SITE.description,
-    url: SITE.url,
-    locale: "en_US",
-    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Anonmee: Anonymous Dating, Friendship & Stranger Chat" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: SITE.title,
-    description: SITE.description,
-    images: ["/opengraph-image"],
-    creator: `@${SITE.name.toLowerCase()}`,
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-  alternates: {
-    canonical: SITE.url,
-    languages: {
-      "en-US": `${SITE.url}/`,
-      "en-GB": `${SITE.url}/locations/london`,
-      "en-IN": `${SITE.url}/locations/india`,
-      "en-CA": `${SITE.url}/locations/toronto`,
-      "en-AU": `${SITE.url}/locations/sydney`,
-      "x-default": `${SITE.url}/`,
-    },
-  },
+  robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {

@@ -4,8 +4,6 @@ import { AdminGate } from "@/features/admin/components/admin-gate";
 export const metadata: Metadata = {
   title: { default: "Admin", template: "%s | Admin" },
   robots: { index: false, follow: false },
-  openGraph: null,
-  twitter: null,
 };
 export const instant = false;
 
