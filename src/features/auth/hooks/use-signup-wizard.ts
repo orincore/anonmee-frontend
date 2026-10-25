@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { GENDERS, MIN_AGE, preferencesSchema, registerSchema, type Gender, type Intent } from "@/contracts";
 import { api, ApiError } from "@/lib/api";
+import { getDeviceInfo } from "@/lib/fingerprint";
 import { useAuth } from "@/providers/auth-provider";
 
 export interface SignupDraft {
@@ -158,9 +159,15 @@ export function useSignupWizard() {
     setResendNotice(null);
     setFormError(undefined);
     try {
+      const dev = await getDeviceInfo().catch(() => ({ deviceId: "", deviceFingerprint: "" }));
       const res = await api<{ ok: boolean; message: string; cooldown: number }>("/auth/send-verification", {
         method: "POST",
-        body: { email: draft.email, username: draft.username },
+        body: {
+          email: draft.email,
+          username: draft.username,
+          deviceId: dev.deviceId,
+          deviceFingerprint: dev.deviceFingerprint,
+        },
       });
       setCooldown(res.cooldown ?? 60);
       setResendNotice("A new verification code was sent to your email!");
@@ -230,9 +237,15 @@ export function useSignupWizard() {
       setBusy(true);
       setFormError(undefined);
       try {
+        const dev = await getDeviceInfo().catch(() => ({ deviceId: "", deviceFingerprint: "" }));
         const res = await api<{ ok: boolean; message: string; cooldown: number }>("/auth/send-verification", {
           method: "POST",
-          body: { email: draft.email, username: draft.username },
+          body: {
+            email: draft.email,
+            username: draft.username,
+            deviceId: dev.deviceId,
+            deviceFingerprint: dev.deviceFingerprint,
+          },
         });
         setCooldown(res.cooldown ?? 60);
         setBusy(false);

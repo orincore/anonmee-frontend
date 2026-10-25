@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { Gender, LoginInput } from "@/contracts";
 import { api, ApiError } from "@/lib/api";
+import { getDeviceInfo } from "@/lib/fingerprint";
 import { readVisitId } from "@/features/landing/visit-id";
 
 /** The only account details the app ever holds: what the person sees about themselves. */
@@ -34,6 +35,8 @@ export interface RegisterFormValues {
   confirmAdult: boolean;
   verificationToken?: string;
   code?: string;
+  deviceId?: string;
+  deviceFingerprint?: string;
 }
 
 const AuthContext = createContext<AuthValue | null>(null);
@@ -62,7 +65,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const register = useCallback(async (input: RegisterFormValues) => {
-    const r = await api<{ user: Me }>("/auth/register", { method: "POST", body: { ...input, visitId: readVisitId() } });
+    const dev = await getDeviceInfo().catch(() => ({ deviceId: "", deviceFingerprint: "" }));
+    const r = await api<{ user: Me }>("/auth/register", {
+      method: "POST",
+      body: {
+        ...input,
+        deviceId: input.deviceId || dev.deviceId,
+        deviceFingerprint: input.deviceFingerprint || dev.deviceFingerprint,
+        visitId: readVisitId(),
+      },
+    });
     setState({ status: "authed", me: r.user });
     return r.user;
   }, []);
