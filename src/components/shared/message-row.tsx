@@ -3,7 +3,7 @@
 import { useLongPress, type PressPoint } from "@/hooks/use-long-press";
 import { cn } from "@/lib/cn";
 import type { ChatLine } from "./chat-line";
-import { MessageBubble } from "./message-bubble";
+import { MessageBubble, formatDateDivider } from "./message-bubble";
 import { GENDER_LABEL } from "./peer-badge";
 import { QuotedReply } from "./quoted-reply";
 import { ReactionChips } from "./reaction-chips";
@@ -25,8 +25,17 @@ export function MessageRow({ line, prev, showAuthor, onRetry, onAuthorTap, onMen
   const press = useLongPress((at) => line.id && onMenu?.(line, at));
   const newAuthor = showAuthor && !line.own && prev?.alias !== line.alias;
   const canAct = !!onMenu && !!line.id;
+  const isDifferentDay = !prev || (line.at > 0 && prev.at > 0 && new Date(prev.at).toDateString() !== new Date(line.at).toDateString());
+
   return (
     <div className={cn("space-y-1", newAuthor && "pt-2")}>
+      {isDifferentDay && line.at > 0 ? (
+        <div className="flex items-center justify-center py-2.5">
+          <span className="rounded-full border border-edge bg-surface px-3 py-0.5 font-mono text-xs font-bold text-muted shadow-sticker-sm">
+            {formatDateDivider(line.at)}
+          </span>
+        </div>
+      ) : null}
       {newAuthor ? (
         <button type="button" onClick={() => onAuthorTap?.(line)} className="flex min-h-8 items-baseline gap-2 px-1 text-left text-sm" aria-label={`Options for ${line.alias}`}>
           <span className="font-bold">{line.alias}</span>
@@ -40,6 +49,7 @@ export function MessageRow({ line, prev, showAuthor, onRetry, onAuthorTap, onMen
             <MessageBubble
               text={line.text}
               own={line.own}
+              timestamp={line.at}
               className={line.status === "failed" ? "opacity-60" : undefined}
               quote={line.replyTo ? <QuotedReply reply={line.replyTo} onOwn={line.own} onJump={onJump} /> : undefined}
             />

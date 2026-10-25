@@ -46,7 +46,7 @@ export function MessageList({ lines, typing, showAuthors, hasMore, loadingOlder,
   const virt = useVirtualizer({
     count,
     getScrollElement: () => ref.current,
-    estimateSize: () => 56,
+    estimateSize: () => 68,
     overscan: 10,
     getItemKey: (i) => (i < lines.length ? lines[i].key : "typing"),
   });
