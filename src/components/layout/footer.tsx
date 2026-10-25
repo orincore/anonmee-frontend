@@ -67,7 +67,7 @@ export function Footer() {
       <div className="mx-auto max-w-6xl px-4 py-14 md:px-6">
         <div className="mb-12 grid gap-8 border-b border-paper/10 pb-12 md:grid-cols-[1.5fr_1fr] md:items-center">
           <div className="space-y-3">
-            <Logo tone="inverse" className="text-4xl" />
+            <Logo tone="inverse" imageClassName="h-9 sm:h-10 max-w-[200px]" />
             <p className="max-w-md text-[15px] leading-relaxed opacity-80">
               The anonymous social network for dating, real friendship, and stranger chat. No photos, no swipe fatigue, zero tracking. Connect by personality and intent.
             </p>
