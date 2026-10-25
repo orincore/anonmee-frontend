@@ -4,14 +4,14 @@ import { cn } from "@/lib/cn";
 export interface LogoProps {
   className?: string;
   href?: string;
-  /** Use "inverse" on dark bands so the logo stays readable. */
+  /** Use "inverse" on dark bands so the white logo is always shown. */
   tone?: "default" | "inverse";
   imageClassName?: string;
 }
 
 /**
- * Brand Logo: renders the official cropped Anonmee logo image exclusively.
- * No duplicate text or wordmark next to it.
+ * Brand Logo: renders the transparent official Anonmee logo without background pills or duplicate text.
+ * Automatically switches between light logo (/anonme-logo.png) and dark mode white logo (/anonmee-logo-white.png).
  */
 export function Logo({ className, href = "/", tone = "default", imageClassName }: LogoProps) {
   const isInverse = tone === "inverse";
@@ -25,16 +25,9 @@ export function Logo({ className, href = "/", tone = "default", imageClassName }
         className
       )}
     >
-      <span
-        className={cn(
-          "inline-flex items-center transition-all",
-          isInverse
-            ? "rounded-xl border-2 border-edge bg-paper px-2 py-1 shadow-sticker-sm"
-            : "dark:rounded-xl dark:border-2 dark:border-edge dark:bg-paper dark:px-2 dark:py-1 dark:shadow-sticker-sm"
-        )}
-      >
+      {isInverse ? (
         <img
-          src="/anonme-logo.png"
+          src="/anonmee-logo-white.png"
           alt="Anonmee"
           className={cn(
             "h-8 w-auto max-w-[170px] object-contain transition-opacity group-hover:opacity-90 sm:h-9 sm:max-w-[190px]",
@@ -42,7 +35,28 @@ export function Logo({ className, href = "/", tone = "default", imageClassName }
           )}
           loading="eager"
         />
-      </span>
+      ) : (
+        <>
+          <img
+            src="/anonme-logo.png"
+            alt="Anonmee"
+            className={cn(
+              "logo-light h-8 w-auto max-w-[170px] object-contain transition-opacity group-hover:opacity-90 sm:h-9 sm:max-w-[190px]",
+              imageClassName
+            )}
+            loading="eager"
+          />
+          <img
+            src="/anonmee-logo-white.png"
+            alt="Anonmee"
+            className={cn(
+              "logo-dark h-8 w-auto max-w-[170px] object-contain transition-opacity group-hover:opacity-90 sm:h-9 sm:max-w-[190px]",
+              imageClassName
+            )}
+            loading="eager"
+          />
+        </>
+      )}
     </Link>
   );
 }

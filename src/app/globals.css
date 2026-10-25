@@ -59,6 +59,18 @@ body {
   letter-spacing: -0.02em;
 }
 
+/* Dynamic brand logo: light mode vs dark mode automatic switching */
+.logo-dark { display: none !important; }
+.logo-light { display: block !important; }
+
+:root[data-theme="dark"] .logo-dark { display: block !important; }
+:root[data-theme="dark"] .logo-light { display: none !important; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .logo-dark { display: block !important; }
+  :root:not([data-theme="light"]) .logo-light { display: none !important; }
+}
+
 :focus-visible {
   outline: 3px solid var(--ring);
   outline-offset: 2px;
