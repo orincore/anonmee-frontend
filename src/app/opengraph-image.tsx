@@ -5,7 +5,8 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 // Generated dynamically on request. Matches the sticker poster theme and highlights all core verticals.
-export default function OpengraphImage() {
+export default async function OpengraphImage() {
+  "use cache";
   return new ImageResponse(
     (
       <div
