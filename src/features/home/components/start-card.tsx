@@ -3,18 +3,21 @@
 import { ArrowRight } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useState } from "react";
-import { PreferencesSheet } from "@/components/shared";
+import { OnlineCounter, PreferencesSheet } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { intentGroupSummary } from "@/contracts";
 import { usePreferences } from "@/hooks/use-preferences";
+import { useSocket } from "@/providers/socket-provider";
 
 /** The main thing to do on Home: start matching. Shows what you are looking for, and lets you change it. */
 export function StartCard() {
   const { preferences, loading, save } = usePreferences();
+  const { online } = useSocket();
   const [editing, setEditing] = useState(false);
   return (
     <section className="rounded-card border-2 border-edge bg-brand p-6 text-brand-fg shadow-sticker md:p-8">
+      <OnlineCounter count={online} className="mb-3 md:hidden" />
       <h2 className="display text-4xl md:text-5xl">Ready for someone new?</h2>
       <div className="mt-4 min-h-12">
         {loading || !preferences ? (

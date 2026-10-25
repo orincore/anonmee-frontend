@@ -3,7 +3,7 @@ import Link from "next/link";
 import { SectionHeading } from "@/components/shared";
 import { FAQ_ITEMS } from "@/lib/faq-items";
 
-const SHOWN = FAQ_ITEMS.slice(0, 4);
+const SHOWN = FAQ_ITEMS.slice(0, 6);
 
 /** First four questions as native disclosures: no JavaScript, keyboard and screen reader friendly. */
 export function FaqList() {

@@ -18,13 +18,17 @@ export function LoginForm() {
   const [formError, setFormError] = useState<string | null>(null);
   const {
     register, handleSubmit, formState: { errors, isSubmitting },
-  } = useForm<LoginInput>({ resolver: zodResolver<LoginInput>(loginSchema), defaultValues: { email: "", password: "" } });
+  } = useForm<LoginInput>({ resolver: zodResolver<LoginInput>(loginSchema), defaultValues: { identifier: "", password: "" } });
 
   const submit = handleSubmit(async (values) => {
     setFormError(null);
     try {
-      await login(values);
-      router.replace("/home");
+      const user = await login(values);
+      if (!user.emailVerified) {
+        router.replace("/verify-email");
+      } else {
+        router.replace("/home");
+      }
     } catch (e) {
       setFormError(e instanceof ApiError ? e.message : "Something went wrong. Please try again.");
     }
@@ -32,7 +36,16 @@ export function LoginForm() {
 
   return (
     <form onSubmit={submit} noValidate className="space-y-6">
-      <TextField label="Email" type="email" inputMode="email" autoComplete="email" error={errors.email?.message && "Enter your email address."} {...register("email")} />
+      <TextField
+        label="Email or username"
+        type="text"
+        autoComplete="username"
+        autoCapitalize="none"
+        autoCorrect="off"
+        spellCheck={false}
+        error={errors.identifier?.message && "Enter your email or username."}
+        {...register("identifier")}
+      />
       <PasswordField label="Password" autoComplete="current-password" error={errors.password?.message && "Enter your password."} {...register("password")} />
       {formError ? (
         <p role="alert" className="rounded-2xl bg-danger/10 px-4 py-3 text-[15px] font-medium text-danger">

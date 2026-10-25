@@ -4,18 +4,48 @@ import { FAQ_ITEMS } from "@/lib/faq-items";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "FAQ",
-  description: "Answers about Anonmee: who can use it, what others see, how long messages are kept, and how reporting works.",
+  title: "Frequently Asked Questions — Anonymous Dating, Friendship & Chat",
+  description:
+    "Direct answers about Anonmee: how anonymous dating and friendship matching works, privacy rules, zero photo policy, ephemeral chats, and safety moderation for adults 18+.",
+  keywords: [
+    "anonmee faq",
+    "anonymous dating questions",
+    "how to make friends anonymously",
+    "is anonmee safe",
+    "how stranger matching works",
+  ],
   alternates: { canonical: `${SITE.url}/faq` },
+  openGraph: {
+    title: "Anonmee FAQ — Questions People Ask",
+    description: "Clear answers on how Anonmee handles anonymous matching, user privacy, and adult community safety.",
+    url: `${SITE.url}/faq`,
+  },
 };
 
 export default function FaqPage() {
-  // The structured data repeats the visible answers word for word, so search engines and AI assistants quote us correctly.
-  const ld = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: FAQ_ITEMS.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) };
+  const ld = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: FAQ_ITEMS.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  };
+
   return (
     <>
-      <ProsePage title="Questions people ask." intro="Straight answers, no fine print." sections={FAQ_ITEMS.map((f) => ({ heading: f.q, paragraphs: [f.a] }))} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, "\\u003c") }} />
+      <ProsePage
+        title="Questions people ask."
+        intro="Straightforward answers about anonymous dating, making friends, stranger chat, and our privacy guarantees."
+        sections={FAQ_ITEMS.map((f) => ({ heading: f.q, paragraphs: [f.a] }))}
+      />
+      <script
+        id="faq-json-ld"
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, "\\u003c") }}
+      />
     </>
   );
 }

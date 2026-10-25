@@ -4,9 +4,16 @@ import { YOUR_DATA_SECTIONS } from "@/features/content/legal-content";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Your data and deleting your account",
-  description: "See, correct and delete your Anonmee data. Delete your account yourself with your password.",
+  title: "Your Data Rights & Permanent Account Deletion",
+  description:
+    "How to view, modify, or permanently delete your Anonmee account and associated data. Complete user control and right to be forgotten.",
+  keywords: ["delete account", "data rights", "privacy rights", "gdpr rights anonymous chat"],
   alternates: { canonical: `${SITE.url}/your-data` },
+  openGraph: {
+    title: "Your Data Rights at Anonmee",
+    description: "Full control over your data: view, export, or permanently delete your account in one click.",
+    url: `${SITE.url}/your-data`,
+  },
 };
 
 export default function Page() {

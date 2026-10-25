@@ -1,8 +1,85 @@
 import type { MetadataRoute } from "next";
+import { AUDIENCES } from "@/lib/audiences";
+import { LOCATIONS } from "@/lib/locations";
 import { SITE } from "@/lib/site";
 import { TOPICS } from "@/lib/topics";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const pages = ["", "/about", "/safety", "/faq", "/contact", "/terms", "/privacy", "/cookies", "/community-guidelines", "/child-safety", "/your-data", ...TOPICS.map((t) => `/topics/${t.slug}`)];
-  return pages.map((p) => ({ url: `${SITE.url}${p}`, changeFrequency: p === "" ? "daily" : "monthly", priority: p === "" ? 1 : 0.6 }));
+  const now = new Date();
+
+  // Root landing page
+  const rootEntry: MetadataRoute.Sitemap[number] = {
+    url: SITE.url,
+    lastModified: now,
+    changeFrequency: "daily",
+    priority: 1.0,
+  };
+
+  // High-priority core topic pages
+  const topicEntries: MetadataRoute.Sitemap = TOPICS.map((t) => {
+    const isPrimaryVertical = ["dating", "friendship", "stranger-chat", "deep-talks", "venting"].includes(t.slug);
+    return {
+      url: `${SITE.url}/topics/${t.slug}`,
+      lastModified: now,
+      changeFrequency: isPrimaryVertical ? "daily" : "weekly",
+      priority: isPrimaryVertical ? 0.9 : 0.7,
+    };
+  });
+
+  // Location-based SEO pages (Cities & Countries)
+  const locationIndex: MetadataRoute.Sitemap[number] = {
+    url: `${SITE.url}/locations`,
+    lastModified: now,
+    changeFrequency: "weekly",
+    priority: 0.8,
+  };
+  const locationEntries: MetadataRoute.Sitemap = LOCATIONS.map((l) => ({
+    url: `${SITE.url}/locations/${l.slug}`,
+    lastModified: now,
+    changeFrequency: "weekly",
+    priority: l.type === "country" ? 0.85 : 0.75,
+  }));
+
+  // User Target / Persona-based SEO pages
+  const audienceIndex: MetadataRoute.Sitemap[number] = {
+    url: `${SITE.url}/for`,
+    lastModified: now,
+    changeFrequency: "weekly",
+    priority: 0.8,
+  };
+  const audienceEntries: MetadataRoute.Sitemap = AUDIENCES.map((a) => ({
+    url: `${SITE.url}/for/${a.slug}`,
+    lastModified: now,
+    changeFrequency: "weekly",
+    priority: 0.85,
+  }));
+
+  // Marketing & documentation pages
+  const coreContentPages = [
+    { path: "/about", priority: 0.8, frequency: "weekly" as const },
+    { path: "/safety", priority: 0.8, frequency: "weekly" as const },
+    { path: "/faq", priority: 0.8, frequency: "weekly" as const },
+    { path: "/community-guidelines", priority: 0.6, frequency: "monthly" as const },
+    { path: "/child-safety", priority: 0.6, frequency: "monthly" as const },
+    { path: "/contact", priority: 0.5, frequency: "monthly" as const },
+    { path: "/privacy", priority: 0.5, frequency: "monthly" as const },
+    { path: "/terms", priority: 0.5, frequency: "monthly" as const },
+    { path: "/cookies", priority: 0.4, frequency: "monthly" as const },
+    { path: "/your-data", priority: 0.4, frequency: "monthly" as const },
+  ].map((page) => ({
+    url: `${SITE.url}${page.path}`,
+    lastModified: now,
+    changeFrequency: page.frequency,
+    priority: page.priority,
+  }));
+
+  return [
+    rootEntry,
+    ...topicEntries,
+    locationIndex,
+    ...locationEntries,
+    audienceIndex,
+    ...audienceEntries,
+    ...coreContentPages,
+  ];
 }

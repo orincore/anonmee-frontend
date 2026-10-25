@@ -14,13 +14,17 @@ export function AppGate({ children }: { children: React.ReactNode }) {
   const { state, retry } = useAuth();
   const router = useRouter();
   useEffect(() => {
-    if (state.status === "guest") router.replace("/login");
-  }, [state.status, router]);
+    if (state.status === "guest") {
+      router.replace("/login");
+    } else if (state.status === "authed" && !state.me.emailVerified) {
+      router.replace("/verify-email");
+    }
+  }, [state, router]);
 
   if (state.status === "offline") {
     return <div className="mx-auto w-full max-w-xl px-4 pt-24"><ErrorState message="Cannot reach Anonmee. Check your connection." onRetry={retry} /></div>;
   }
-  if (state.status !== "authed") {
+  if (state.status !== "authed" || !state.me.emailVerified) {
     return (
       <div className="mx-auto w-full max-w-2xl space-y-5 px-4 pt-16" aria-busy>
         <Skeleton className="h-12 w-2/3" />

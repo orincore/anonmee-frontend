@@ -13,7 +13,7 @@ import { SearchingView } from "./searching-view";
 
 /** The Chat tab: rest, search, no-match, and the live conversation, all driven by one state machine. */
 export function MatchScreen() {
-  const { phase, start, cancel, leave, reset } = useMatch();
+  const { phase, start, cancel, leave, skip, reset } = useMatch();
   const { connected } = useSocket();
   const { preferences, save } = usePreferences();
   const [editing, setEditing] = useState(false);
@@ -35,7 +35,7 @@ export function MatchScreen() {
       {phase.kind === "searching" ? <SearchingView onCancel={cancel} /> : null}
       {phase.kind === "idle" ? <IdleView title="Meet someone new." body="We will pair you with a stranger who wants the same kind of chat. Only your gender and age are shown." error={phase.error} primaryLabel="Start matching" onStart={start} secondary={{ label: "What I am looking for", onClick: () => setEditing(true) }} /> : null}
       {phase.kind === "timeout" ? <IdleView title="No one yet." body="Nobody who fits is around right now. Keep waiting, or widen what you are looking for." primaryLabel="Keep waiting" onStart={start} secondary={{ label: "Change preferences", onClick: () => setEditing(true) }} /> : null}
-      {phase.kind === "chatting" ? <ChatView key={phase.chat.id} chat={phase.chat} ended={phase.ended} onLeave={leave} onNext={() => { reset(); void start(); }} /> : null}
+      {phase.kind === "chatting" ? <ChatView key={phase.chat.id} chat={phase.chat} ended={phase.ended} onLeave={leave} onNext={() => { reset(); void start(); }} onSkip={skip} /> : null}
       {preferences ? <PreferencesSheet open={editing} onOpenChange={setEditing} value={preferences} onSave={save} /> : null}
     </>
   );

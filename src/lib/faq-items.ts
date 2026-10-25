@@ -3,14 +3,54 @@ export interface FaqItem {
   a: string;
 }
 
-/** Plain text answers, shared by the landing teaser, the FAQ page and its structured data, so all three always match. */
+/** Plain text answers shared across landing FAQ, FAQ page, JSON-LD structured data, and LLM text files. */
 export const FAQ_ITEMS: FaqItem[] = [
-  { q: "Who can use Anonmee?", a: "Adults only. You must be 18 or older to sign up. We ask for your date of birth and check it on our server." },
-  { q: "What can other people see about me?", a: "A random name that changes in every chat, your gender and your age. Never your email, username, name or date of birth." },
-  { q: "Does Anonmee keep my messages?", a: "One-to-one chats are deleted when the chat ends. Group and global messages are removed after 7 days. If someone is reported, the reported messages are kept briefly for review." },
-  { q: "Can the Anonmee team see who I am?", a: "Our safety team can look up account details to deal with abuse. That access needs two-step login and every look is logged. Other users can never see it." },
-  { q: "What if someone is rude or unsafe?", a: "Tap Report or Block in any chat. A reported person is never matched with you again, and reports of anyone under 18 are acted on straight away." },
-  { q: "Is it free?", a: "Yes. Matching, chat and groups are free." },
-  { q: "Can I send photos or files?", a: "No. Anonmee is text only, which keeps chats safer and more private." },
-  { q: "Are groups limited in size?", a: "No. Anyone can join a group, and there is no member limit." },
+  {
+    q: "Who can use Anonmee?",
+    a: "Adults only. You must be 18 or older to sign up. We ask for your date of birth and verify age on our server before creating an account.",
+  },
+  {
+    q: "Can I use Anonmee as an anonymous dating app?",
+    a: "Yes! Anonmee is designed for authentic anonymous dating and romance. You can pick exact intents like casual dating, flirting, long-term relationship, online romance, or open-minded connections. You are matched only with someone who picked the exact same intent, without any photo superficiality or swipe bias.",
+  },
+  {
+    q: "Can I use Anonmee to make genuine friends?",
+    a: "Absolutely. Many people use Anonmee as a friendship app to find friends who share their interests, mindset, or late-night schedules. When you choose 'Friendship', you connect with peers looking for authentic conversation and companionship.",
+  },
+  {
+    q: "What can other people see about me in chat?",
+    a: "Other users only see a random alias (e.g., 'SwiftFalcon') that changes in every conversation, your gender, and your age. Your email, username, real name, and date of birth are completely hidden and never disclosed.",
+  },
+  {
+    q: "How does the random stranger chat matching work?",
+    a: "Anonmee uses a realtime two-way intent matching engine. You specify what you want (friendship, dating, casual talk, deep thoughts) and who you want to meet (gender and age range). Our WebSocket engine pairs you in under a second with someone whose mutual preferences match yours perfectly.",
+  },
+  {
+    q: "How does the Skip button work during chat?",
+    a: "Every live 1:1 chat features an instant 'Skip' button. If either user clicks Skip, the current chat ends immediately and both users are automatically re-queued into the matching engine to connect with new strangers without any awkward delay.",
+  },
+  {
+    q: "How is Anonmee different from Tinder, Bumble, or Omegle?",
+    a: "Unlike Tinder or Bumble, Anonmee eliminates superficial photo swiping, paid paywalls, and social media stalking — matching is based purely on intent, vibe, and conversation. Unlike Omegle or Chatroulette, Anonmee is strictly adults-only (18+), text-only (no unsolicited video/camera feeds), and pairs users by specific topics and mutual desires.",
+  },
+  {
+    q: "Does Anonmee keep my chat messages?",
+    a: "One-to-one chats are ephemeral and wiped from memory the moment a chat ends. Group messages are automatically expunged after 7 days. If a user is reported for safety violations, the reported snippet is held temporarily for moderator review.",
+  },
+  {
+    q: "Is Anonmee friendly for LGBTQ+, bi-curious, and open-minded dating?",
+    a: "Yes. Anonmee has dedicated intent categories for same-gender matching, bi-curious exploration, polyamory, open relationships, and gender-inclusive connections in a safe, non-judgmental environment.",
+  },
+  {
+    q: "Can I send photos or files?",
+    a: "No. Anonmee is strictly text-only. Disallowing image/file uploads prevents unsolicited media, spam, and privacy leaks, keeping the platform safe and comfortable for everyone.",
+  },
+  {
+    q: "What if someone is rude, inappropriate, or violates guidelines?",
+    a: "Every chat has instant Report and Block controls accessible in one tap. Once blocked or reported, you will never be matched with that person again, and reports are reviewed swiftly by our human safety team.",
+  },
+  {
+    q: "Is Anonmee free to use?",
+    a: "Yes. 1:1 matching, group rooms, filtering, and unlimited chats are 100% free with no premium paywalls or hidden subscriptions.",
+  },
 ];

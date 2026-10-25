@@ -10,8 +10,10 @@ export function GuestOnly({ children }: { children: React.ReactNode }) {
   const { state } = useAuth();
   const router = useRouter();
   useEffect(() => {
-    if (state.status === "authed") router.replace("/home");
-  }, [state.status, router]);
+    if (state.status === "authed") {
+      router.replace(state.me.emailVerified ? "/home" : "/verify-email");
+    }
+  }, [state, router]);
 
   if (state.status === "guest") return <>{children}</>;
   return (

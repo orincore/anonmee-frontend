@@ -10,14 +10,17 @@ export interface Me {
   username: string;
   gender: Gender;
   age: number;
+  emailVerified: boolean;
 }
 type State = { status: "loading" } | { status: "offline" } | { status: "guest" } | { status: "authed"; me: Me };
 
 interface AuthValue {
   state: State;
-  register: (input: RegisterFormValues) => Promise<void>;
-  login: (input: LoginInput) => Promise<void>;
+  register: (input: RegisterFormValues) => Promise<Me>;
+  login: (input: LoginInput) => Promise<Me>;
   logout: () => Promise<void>;
+  verifyEmail: (code: string, email?: string) => Promise<void>;
+  resendVerification: (email?: string) => Promise<{ ok: boolean; message: string; cooldown: number }>;
   /** Try again after the connection dropped. */
   retry: () => void;
 }
@@ -29,6 +32,8 @@ export interface RegisterFormValues {
   gender: Me["gender"];
   dateOfBirth: string;
   confirmAdult: boolean;
+  verificationToken?: string;
+  code?: string;
 }
 
 const AuthContext = createContext<AuthValue | null>(null);
@@ -59,11 +64,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const register = useCallback(async (input: RegisterFormValues) => {
     const r = await api<{ user: Me }>("/auth/register", { method: "POST", body: { ...input, visitId: readVisitId() } });
     setState({ status: "authed", me: r.user });
+    return r.user;
   }, []);
 
   const login = useCallback(async (input: LoginInput) => {
     const r = await api<{ user: Me }>("/auth/login", { method: "POST", body: input });
     setState({ status: "authed", me: r.user });
+    return r.user;
   }, []);
 
   const logout = useCallback(async () => {
@@ -71,7 +78,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setState({ status: "guest" });
   }, []);
 
-  const value = useMemo(() => ({ state, register, login, logout, retry }), [state, register, login, logout, retry]);
+  const verifyEmail = useCallback(async (code: string, email?: string) => {
+    const r = await api<{ ok: boolean; user: Me }>("/auth/verify-email", {
+      method: "POST",
+      body: { code, email },
+    });
+    setState({ status: "authed", me: r.user });
+  }, []);
+
+  const resendVerification = useCallback(async (email?: string) => {
+    return api<{ ok: boolean; message: string; cooldown: number }>("/auth/send-verification", {
+      method: "POST",
+      body: { email },
+    });
+  }, []);
+
+  const value = useMemo(
+    () => ({ state, register, login, logout, verifyEmail, resendVerification, retry }),
+    [state, register, login, logout, verifyEmail, resendVerification, retry]
+  );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 

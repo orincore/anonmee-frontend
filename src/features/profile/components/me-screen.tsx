@@ -2,7 +2,6 @@
 
 import { SignOut } from "@phosphor-icons/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { PageShell } from "@/components/layout";
 import { PreferencesSheet, ThemeToggle } from "@/components/shared";
@@ -12,15 +11,16 @@ import { usePreferences } from "@/hooks/use-preferences";
 import { useAuth } from "@/providers/auth-provider";
 import { BlockedList } from "./blocked-list";
 import { DeleteAccountSheet } from "./delete-account-sheet";
+import { LogoutSheet } from "./logout-sheet";
 import { ProfileCard } from "./profile-card";
 
 /** The Me tab: your details, what you are looking for, who you have blocked, theme and log out. */
 export function MeScreen() {
-  const { state, logout } = useAuth();
+  const { state } = useAuth();
   const { preferences, save } = usePreferences();
   const [editing, setEditing] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  const router = useRouter();
+  const [loggingOut, setLoggingOut] = useState(false);
   if (state.status !== "authed") return null;
 
   return (
@@ -45,7 +45,7 @@ export function MeScreen() {
             <span className="font-bold">Theme</span>
             <ThemeToggle />
           </section>
-          <Button variant="danger" size="lg" block onClick={async () => { await logout(); router.replace("/"); }}>
+          <Button variant="danger" size="lg" block onClick={() => setLoggingOut(true)}>
             <SignOut aria-hidden weight="bold" className="size-5" />
             Log out
           </Button>
@@ -60,6 +60,7 @@ export function MeScreen() {
           </section>
         </div>
       </div>
+      <LogoutSheet open={loggingOut} onOpenChange={setLoggingOut} />
       <DeleteAccountSheet open={deleting} onOpenChange={setDeleting} />
       {preferences ? <PreferencesSheet open={editing} onOpenChange={setEditing} value={preferences} onSave={save} /> : null}
     </PageShell>

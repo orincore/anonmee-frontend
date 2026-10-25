@@ -19,7 +19,15 @@ export function Hero() {
             Stay{" "}
             <span className="inline-block -rotate-1 rounded-2xl border-2 border-ink bg-accent px-3 pb-1 text-accent-fg shadow-[4px_4px_0_0_var(--ink)]">anonymous.</span>
           </h1>
-          <p className="max-w-md text-lg md:text-xl">Get matched with someone who wants the same kind of chat. Only your gender and age are ever shown.</p>
+          <p className="max-w-md text-lg md:text-xl">
+            The free anonymous app for dating, genuine friendship, and talking to strangers. Get matched with adults who want the exact same kind of conversation. Only your gender and age are ever shown.
+          </p>
+          <div className="flex flex-wrap gap-2 text-xs font-bold text-accent-fg">
+            <span className="rounded-full border border-ink bg-accent px-3 py-1 shadow-sticker-sm">Dating & Flirting</span>
+            <span className="rounded-full border border-ink bg-pop px-3 py-1 text-pop-fg shadow-sticker-sm">Make Real Friends</span>
+            <span className="rounded-full border border-ink bg-surface px-3 py-1 text-fg shadow-sticker-sm">Stranger Chat</span>
+            <span className="rounded-full border border-ink bg-accent px-3 py-1 shadow-sticker-sm">No Photo Pressure</span>
+          </div>
           <Button asChild size="lg" className="w-full border-ink shadow-[4px_4px_0_0_var(--ink)] hover:shadow-[6px_6px_0_0_var(--ink)] sm:w-auto">
             <Link href="/signup">
               Start chatting

@@ -7,7 +7,9 @@ export function FinalCta() {
     <section aria-label="Get started" className="overflow-x-clip bg-brand text-brand-fg">
       <div className="relative mx-auto w-full max-w-6xl px-4 py-20 md:px-6 md:py-28">
         <h2 className="display max-w-4xl text-hero">Someone new is waiting.</h2>
-        <p className="mt-6 max-w-[46ch] text-lg md:text-xl">Sign up in under a minute. You must be 18 or older.</p>
+        <p className="mt-6 max-w-[50ch] text-lg md:text-xl">
+          Join thousands of adults dating, making friends, and chatting anonymously. Free forever, zero photo pressure, and setup takes under a minute.
+        </p>
         <Button asChild size="lg" className="mt-8 w-full border-ink shadow-[4px_4px_0_0_var(--ink)] hover:shadow-[6px_6px_0_0_var(--ink)] sm:w-auto">
           <Link href="/signup">
             Start chatting

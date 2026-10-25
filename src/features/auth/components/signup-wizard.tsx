@@ -38,7 +38,17 @@ export function SignupWizard() {
             <h2 className="display text-3xl">{title}</h2>
             <p className="text-base text-muted">{body}</p>
           </div>
-          <SignupStep step={w.step} draft={w.draft} errors={w.errors} set={w.set} touch={w.touch} />
+          <SignupStep
+            step={w.step}
+            draft={w.draft}
+            errors={w.errors}
+            set={w.set}
+            touch={w.touch}
+            resendCode={w.resendCode}
+            cooldown={w.cooldown}
+            resending={w.resending}
+            resendNotice={w.resendNotice}
+          />
         </motion.div>
       </AnimatePresence>
       {last ? (
@@ -49,7 +59,7 @@ export function SignupWizard() {
       ) : null}
       {w.formError ? <p role="alert" className="rounded-ui border-2 border-danger px-4 py-3 text-[15px] font-bold text-danger">{w.formError}</p> : null}
       {/* On phones this bar stays pinned to the bottom of the screen, so Next is always in reach however long the step is. */}
-      <div className="sticky bottom-0 z-10 -mx-4 space-y-2 border-t-2 border-line bg-bg px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 md:static md:mx-0 md:border-0 md:bg-transparent md:p-0">
+      <div className="sticky bottom-0 z-10 -mx-4 box-border w-[calc(100%+2rem)] space-y-2 border-t-2 border-line bg-bg px-4 pb-[calc(env(safe-area-inset-bottom,0px)+0.75rem)] pt-3 md:static md:mx-0 md:w-auto md:border-0 md:bg-transparent md:p-0">
         <div className="flex gap-3">
         {w.index > 0 ? (
           <Button type="button" variant="secondary" size="lg" onClick={w.back} aria-label="Back" className="px-5">
@@ -57,7 +67,7 @@ export function SignupWizard() {
           </Button>
         ) : null}
         <Button type="submit" size="lg" block loading={w.busy} disabled={!w.valid} aria-describedby={w.valid ? undefined : "step-hint"}>
-          {last ? "Create account" : "Next"}
+          {last ? "Create account" : w.step === "verify" ? "Verify & Continue" : "Next"}
         </Button>
       </div>
       {w.valid ? null : <p id="step-hint" className="text-center text-sm text-muted">Fill in everything above to continue.</p>}

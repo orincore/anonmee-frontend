@@ -1,6 +1,6 @@
 "use client";
 
-import { Flag, Prohibit, SignOut } from "@phosphor-icons/react";
+import { Flag, Prohibit, SignOut, SkipForward } from "@phosphor-icons/react";
 import { useState } from "react";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { cn } from "@/lib/cn";
@@ -14,6 +14,8 @@ export interface ChatMenuSheetProps {
   onBlock: () => Promise<void>;
   /** Leave the chat. Leave this out to hide the row, for example when reporting a person inside a group. */
   onLeave?: () => void;
+  /** Skip this chat to immediately search for another stranger. */
+  onSkip?: () => void;
   description?: string;
   /** Show only the Leave row, for menus about the group itself rather than a person. */
   hideSafety?: boolean;
@@ -32,13 +34,24 @@ function Row({ icon: IconComponent, label, note, danger, onClick }: { icon: type
 }
 
 /** The three safety actions, always one tap from any chat. Block asks once before it does anything. */
-export function ChatMenuSheet({ open, onOpenChange, alias, onReport, onBlock, onLeave, description = "You are always in control.", hideSafety }: ChatMenuSheetProps) {
+export function ChatMenuSheet({ open, onOpenChange, alias, onReport, onBlock, onLeave, onSkip, description = "You are always in control.", hideSafety }: ChatMenuSheetProps) {
   const [confirming, setConfirming] = useState(false);
   const [error, setError] = useState<string>();
   return (
     <Sheet open={open} onOpenChange={(o) => { onOpenChange(o); if (!o) setConfirming(false); }}>
       <SheetContent title={alias} description={description}>
         <div className="space-y-3">
+          {onSkip ? (
+            <Row
+              icon={SkipForward}
+              label="Skip to new stranger"
+              note="Instantly find another conversation."
+              onClick={() => {
+                onOpenChange(false);
+                onSkip();
+              }}
+            />
+          ) : null}
           {hideSafety ? null : <Row icon={Flag} label="Report" note="Tell us what happened. Also blocks them." onClick={() => { onOpenChange(false); onReport(); }} />}
           {hideSafety ? null : confirming ? (
             <div className="space-y-3 rounded-ui border-2 border-danger p-4">

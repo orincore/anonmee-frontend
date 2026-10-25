@@ -3,21 +3,74 @@ import { ProsePage } from "@/features/content/components/prose-page";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "About",
-  description: "Anonmee is an anonymous chat for adults. Only gender and age are ever shown. Here is why we built it.",
+  title: "About Anonmee — Why We Built an Anonymous Dating & Friendship App",
+  description:
+    "Learn why Anonmee was created: to give adults 18+ a genuine space for dating, authentic friendship, and talking to strangers without photo swiping, social anxiety, or identity leakage.",
+  keywords: [
+    "about anonmee",
+    "anonymous dating story",
+    "why anonymous dating",
+    "friendship app without photos",
+    "safe stranger chat mission",
+  ],
   alternates: { canonical: `${SITE.url}/about` },
+  openGraph: {
+    title: "About Anonmee — Meaningful Connections Without Profiles",
+    description: "Anonmee exists so adults 18+ can date, make friends, and chat with strangers without handing over their identity.",
+    url: `${SITE.url}/about`,
+  },
 };
 
 export default function AboutPage() {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    name: "About Anonmee",
+    url: `${SITE.url}/about`,
+    description: "The mission, safety principles, and philosophy behind the Anonmee anonymous dating, friendship, and stranger chat application.",
+    mainEntity: {
+      "@type": "Organization",
+      name: SITE.name,
+      url: SITE.url,
+      description: SITE.description,
+    },
+  };
+
   return (
-    <ProsePage
-      title="Say it. Stay you."
-      intro="Anonmee exists so adults can talk to someone new without handing over their identity."
-      sections={[
-        { heading: "What it is", paragraphs: ["A free anonymous chat. You pick what you are here for, we match you with a stranger who picked the same, and you talk. Or join a group about something you love. Nobody sees your email, username, name or date of birth. Only your gender and age."] },
-        { heading: "Why", paragraphs: ["Most social apps ask you to be someone: a profile, photos, followers. Sometimes you just want a conversation where none of that matters. Anonymous does not have to mean unsafe, so safety is built in: adults only, text only, and report and block one tap away."] },
-        { heading: "What we promise, and what we do not", paragraphs: ["We promise to show other people only a random name, your gender and your age, to delete one-to-one chats when they end, and to let you delete your account. We do not promise that strangers will always behave, which is why you are always in control of leaving, blocking and reporting."] },
-      ]}
-    />
+    <>
+      <ProsePage
+        title="Say it. Stay you."
+        intro="Anonmee exists so adults can meet someone new for dating, friendship, or late-night thoughts without handing over their identity or being judged by a photo gallery."
+        sections={[
+          {
+            heading: "What Anonmee is",
+            paragraphs: [
+              "Anonmee is a free, privacy-first platform designed for authentic human connection. Whether you are looking for casual dating, romantic relationships, genuine friendships, deep late-night conversations, or simply someone to talk to, Anonmee pairs you with another adult (18+) who shares your exact intent.",
+              "Nobody ever sees your email, username, real name, or date of birth. Other users only see a random alias, your gender, and your age. There are no photo uploads, no follower counts, and no social media stalking.",
+            ],
+          },
+          {
+            heading: "Why we built an anonymous connection app",
+            paragraphs: [
+              "Modern social networks and dating apps have become performative storefronts. Swiping through filtered selfies turns dating into an algorithmic catalog, while social media makes reaching out to make new friends awkward and vulnerable.",
+              "Sometimes you just want a raw, honest conversation where your appearance, job title, and social status do not matter. We believe anonymity brings out sincerity — when people feel safe from real-world exposure, they open up, laugh freely, and connect on a much deeper level.",
+            ],
+          },
+          {
+            heading: "Safety is built into every layer",
+            paragraphs: [
+              "Anonymity does not have to mean chaos. Anonmee is strictly for verified adults 18 and over, text-only to eliminate unsolicited image sharing, and equipped with instant one-tap Skip, Block, and Report controls.",
+              "One-to-one chats are completely ephemeral and automatically erased from server memory as soon as either person leaves. What happens in your conversation stays in your conversation.",
+            ],
+          },
+        ]}
+      />
+      <script
+        id="about-json-ld"
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }}
+      />
+    </>
   );
 }

@@ -48,9 +48,19 @@ export function useMatch() {
       timers.push(setTimeout(() => dispatch({ t: "chat", chat: { id: p.chatId, you: p.you, peer: p.peer } }), wait));
     };
     const active = (p: FoundPayload) => dispatch({ t: "chat", chat: { id: p.chatId, you: p.you, peer: p.peer } });
-    const waiting = () => dispatch({ t: "searching" });
+    const waiting = () => {
+      startedAt.current = Date.now();
+      dispatch({ t: "searching" });
+    };
     const timeout = () => dispatch({ t: "timeout" });
-    const ended = (p: { roomId: string }) => dispatch({ t: "ended", roomId: p.roomId });
+    const ended = (p: { roomId: string; reason?: string }) => {
+      if (p.reason === "skipped") {
+        startedAt.current = Date.now();
+        dispatch({ t: "searching" });
+        return;
+      }
+      dispatch({ t: "ended", roomId: p.roomId });
+    };
     socket.on(EV.matchFound, found).on(EV.chatActive, active).on("match:waiting", waiting).on(EV.matchTimeout, timeout).on(EV.chatEnd, ended);
     return () => {
       timers.forEach(clearTimeout);
@@ -77,5 +87,16 @@ export function useMatch() {
     await emitAck(socket, EV.chatEnd, { roomId: phase.chat.id });
   }, [socket, phase]);
 
-  return { phase, start, cancel, leave, reset: () => dispatch({ t: "idle" }) };
+  const skip = useCallback(async () => {
+    if (phase.kind !== "chatting" || !socket) return;
+    const roomId = phase.chat.id;
+    startedAt.current = Date.now();
+    dispatch({ t: "searching" });
+    const r = await emitAck(socket, EV.chatSkip, { roomId });
+    if (!r.ok && r.error !== "chat_ended") {
+      dispatch({ t: "idle", error: r.message });
+    }
+  }, [socket, phase]);
+
+  return { phase, start, cancel, leave, skip, reset: () => dispatch({ t: "idle" }) };
 }

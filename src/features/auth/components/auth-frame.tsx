@@ -24,7 +24,7 @@ export function AuthFrame({ title, subtitle, children }: AuthFrameProps) {
         </div>
         <ThemeToggle />
       </aside>
-      <main className="mx-auto flex w-full max-w-md flex-col justify-center gap-8 px-4 pb-[calc(2rem+env(safe-area-inset-bottom))] pt-8 md:max-w-lg md:px-10 md:py-12">
+      <main className="mx-auto flex w-full max-w-md flex-col justify-center gap-8 overflow-x-hidden px-4 pb-28 pt-8 md:max-w-lg md:overflow-x-visible md:px-10 md:py-12 md:pb-12">
         <div className="space-y-2">
           <h1 className="display text-display">{title}</h1>
           <p className="text-base text-muted">{subtitle}</p>

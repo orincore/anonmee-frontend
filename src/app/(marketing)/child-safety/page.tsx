@@ -4,9 +4,16 @@ import { CHILD_SAFETY_SECTIONS } from "@/features/content/legal-content";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Child safety and age policy",
-  description: "Anonmee is for adults 18 and over. How we keep minors out and what we do when someone reports one.",
+  title: "Child Safety & Age Verification Policy (18+ Strict)",
+  description:
+    "Anonmee is strictly for adults 18 and over. How we prevent minors from joining, our reporting protocols, and our zero-tolerance policies.",
+  keywords: ["child safety", "age policy 18+", "adults only chat policy", "minor protection"],
   alternates: { canonical: `${SITE.url}/child-safety` },
+  openGraph: {
+    title: "Anonmee Child Safety & Strict 18+ Age Policy",
+    description: "Our comprehensive measures to keep minors off Anonmee and maintain a safe adult environment.",
+    url: `${SITE.url}/child-safety`,
+  },
 };
 
 export default function Page() {
