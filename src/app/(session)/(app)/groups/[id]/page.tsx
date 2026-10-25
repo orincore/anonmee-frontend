@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { connection } from "next/server";
 import { RoomScreen } from "@/features/groups/components/room-screen";
@@ -7,7 +8,20 @@ export const instant = false;
 
 export const metadata: Metadata = { title: "Group chat" };
 
-export default async function RoomPage({ params }: { params: Promise<{ id: string }> }) {
+export function generateStaticParams() {
+  return [];
+}
+
+async function RoomContent({ params }: { params: Promise<{ id: string }> }) {
   await connection();
-  return <RoomScreen id={(await params).id} />;
+  const { id } = await params;
+  return <RoomScreen id={id} />;
+}
+
+export default function RoomPage({ params }: { params: Promise<{ id: string }> }) {
+  return (
+    <Suspense>
+      <RoomContent params={params} />
+    </Suspense>
+  );
 }
