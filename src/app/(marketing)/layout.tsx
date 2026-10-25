@@ -13,18 +13,21 @@ export const metadata: Metadata = {
   authors: [{ name: SITE.name, url: SITE.url }],
   openGraph: {
     type: "website",
-    siteName: SITE.name,
+    siteName: SITE.appName,
     title: SITE.title,
     description: SITE.description,
     url: SITE.url,
     locale: "en_US",
-    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Anonmee: Anonymous Dating, Friendship & Stranger Chat" }],
+    images: [
+      { url: "/anonme-logo.png", width: 1254, height: 1254, alt: "Anonmee Dating App Logo - Free Anonymous Dating & Stranger Chat" },
+      { url: "/opengraph-image", width: 1200, height: 630, alt: "Anonmee Dating App: Anonymous Dating, Friendship & Stranger Chat" },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: SITE.title,
     description: SITE.description,
-    images: ["/opengraph-image"],
+    images: ["/anonme-logo.png"],
     creator: `@${SITE.name.toLowerCase()}`,
   },
   robots: {

@@ -13,13 +13,6 @@ export const metadata: Metadata = {
   title: { default: SITE.title, template: `%s | ${SITE.appName}` },
   description: SITE.description,
   applicationName: SITE.appName,
-  keywords: [...SITE.keywords],
-  authors: [{ name: "Anonmee Dating App Team", url: SITE.url }],
-  creator: "Anonmee",
-  publisher: "Anonmee",
-  alternates: {
-    canonical: SITE.url,
-  },
   icons: {
     icon: [
       { url: "/anonme-logo.png", sizes: "1254x1254", type: "image/png" },
@@ -34,41 +27,8 @@ export const metadata: Metadata = {
     ],
     shortcut: "/anonme-logo.png",
   },
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: SITE.url,
-    siteName: SITE.appName,
-    title: SITE.title,
-    description: SITE.description,
-    images: [
-      {
-        url: `${SITE.url}/anonme-logo.png`,
-        width: 1200,
-        height: 1200,
-        alt: "Anonmee Dating App Logo - Free Anonymous Dating & Stranger Chat",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: SITE.title,
-    description: SITE.description,
-    images: [`${SITE.url}/anonme-logo.png`],
-    creator: "@anonmee",
-  },
   manifest: "/manifest.webmanifest",
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
+  robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {
