@@ -9,7 +9,7 @@ export const instant = false;
 export const metadata: Metadata = { title: "Group chat" };
 
 export function generateStaticParams() {
-  return [];
+  return [{ id: "preview" }];
 }
 
 async function RoomContent({ params }: { params: Promise<{ id: string }> }) {
