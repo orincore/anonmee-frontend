@@ -11,15 +11,23 @@ import { PulseProvider } from "@/features/landing/pulse-provider";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Anonmee — Anonymous Dating, Friendship & Stranger Chat App (18+)",
+  title: "Anonmee Dating App — Anonymous Dating, Friendship & Stranger Chat (18+)",
   description:
-    "Free anonymous app for dating, genuine friendship, and talking to strangers online. Match with verified adults 18+ based on shared intents with zero photo bias. 100% private.",
+    "Anonmee is the premier free anonymous dating app for adults 18+. Match with singles based on mutual intent with zero photo bias or superficial swiping. 100% private.",
   keywords: [...SITE.keywords],
   alternates: { canonical: SITE.url },
   openGraph: {
-    title: "Anonmee — Anonymous Dating, Friendship & Stranger Chat App (18+)",
-    description: "Match with adults 18+ for dating, friendship, or casual stranger chat. Zero photos, no real names exposed, 100% free.",
+    title: "Anonmee Dating App — Anonymous Dating, Friendship & Stranger Chat (18+)",
+    description: "Match with adults 18+ for anonymous dating, romance, friendship, or casual stranger chat. Zero photos, no real names exposed, 100% free.",
     url: SITE.url,
+    images: [
+      {
+        url: `${SITE.url}/anonme-logo.png`,
+        width: 1200,
+        height: 1200,
+        alt: "Anonmee Dating App Logo",
+      },
+    ],
   },
 };
 

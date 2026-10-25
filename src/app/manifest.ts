@@ -3,8 +3,8 @@ import { SITE } from "@/lib/site";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Anonmee — Anonymous Dating, Friendship & Stranger Chat",
-    short_name: "Anonmee",
+    name: "Anonmee Dating App — Anonymous Dating, Friendship & Stranger Chat",
+    short_name: "Anonmee Dating",
     description: SITE.description,
     start_url: "/",
     display: "standalone",
@@ -16,9 +16,21 @@ export default function manifest(): MetadataRoute.Manifest {
     orientation: "portrait-primary",
     icons: [
       {
-        src: "/icon.svg",
-        sizes: "any",
-        type: "image/svg+xml",
+        src: "/anonme-logo.png",
+        sizes: "1254x1254",
+        type: "image/png",
+        purpose: "any",
+      },
+      {
+        src: "/icon-512.png",
+        sizes: "512x512",
+        type: "image/png",
+        purpose: "any",
+      },
+      {
+        src: "/icon-192.png",
+        sizes: "192x192",
+        type: "image/png",
         purpose: "any",
       },
       {

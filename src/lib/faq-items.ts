@@ -6,6 +6,10 @@ export interface FaqItem {
 /** Plain text answers shared across landing FAQ, FAQ page, JSON-LD structured data, and LLM text files. */
 export const FAQ_ITEMS: FaqItem[] = [
   {
+    q: "What is Anonmee Dating App?",
+    a: "Anonmee is the premier free anonymous dating app and private stranger chat platform for adults 18+. Unlike traditional dating apps that force you to upload photos and swipe endlessly on appearances, Anonmee matches you with singles and strangers based strictly on mutual intent (dating, romance, flirting, deep conversation, or friendship) with zero photo pressure. Your identity is 100% protected under a random pseudonym, and chats are ephemeral.",
+  },
+  {
     q: "Who can use Anonmee?",
     a: "Adults only. You must be 18 or older to sign up. We ask for your date of birth and verify age on our server before creating an account.",
   },

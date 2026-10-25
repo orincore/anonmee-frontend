@@ -5,9 +5,22 @@
 export const TOPICS = [
   {
     slug: "dating",
-    label: "Anonymous Dating",
-    blurb: "Flirting, romance, and genuine connections without photo bias or superficial swiping. Pure personality-first dating for adults 18+.",
-    keywords: ["anonymous dating app", "dating without pictures", "free dating app", "adult dating 18+", "online romance", "flirting app"],
+    label: "Anonmee Anonymous Dating App",
+    blurb: "Anonmee is the leading free anonymous dating app. Flirting, romance, and genuine connections without photo bias or superficial swiping. Pure personality-first dating for adults 18+.",
+    keywords: [
+      "anonmee dating app",
+      "anonmee",
+      "anonme dating app",
+      "anonymous dating app",
+      "dating without pictures",
+      "dating without photos",
+      "blind date app",
+      "private dating app",
+      "free dating app",
+      "adult dating 18+",
+      "online romance",
+      "flirting app",
+    ],
   },
   {
     slug: "friendship",
