@@ -16,6 +16,7 @@ export const EV = {
   roomJoin: "room:join",
   roomLeave: "room:leave",
   roomMessage: "room:message",
+  roomTyping: "room:typing",
   chatResume: "chat:resume",
   chatActive: "chat:active",
   roomHistory: "room:history",
@@ -110,3 +111,16 @@ export const roomJoinSchema = z.object({
   /** Last message number the client has. Omit on first join to get recent history. */
   lastSeq: z.number().int().min(0).optional(),
 });
+
+/** Sent when someone in a room starts typing. The server turns it into a shared typing view: who is typing, shown by alias only. */
+export const roomTypingSchema = z.object({ roomId: z.string().min(1).max(64) });
+
+/** Broadcast to a room whenever the set of typists changes. Only aliases, never ids. Auto-clears after silence. */
+export interface RoomTypingView {
+  roomId: string;
+  /** Aliases of people currently typing (excluding yourself on your socket). */
+  typists: string[];
+}
+
+/** 1:1 typing payload. Per spec only gender/age are ever shown to the peer, so the typing event carries only roomId. */
+export type ChatTypingPayload = { roomId: string };
