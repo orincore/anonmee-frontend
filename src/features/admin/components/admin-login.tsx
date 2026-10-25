@@ -8,10 +8,10 @@ import { TextField } from "@/components/ui/text-field";
 import { api, ApiError } from "@/lib/api";
 import { PasswordField } from "@/features/auth/components/password-field";
 
-/** Staff sign-in: email, password, and the 6 digit code from the authenticator app. One message for any wrong answer. */
+/** Staff sign-in: email and password. */
 export function AdminLogin() {
   const router = useRouter();
-  const [form, setForm] = useState({ email: "", password: "", code: "" });
+  const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState<string>();
   const [busy, setBusy] = useState(false);
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) => setForm((f) => ({ ...f, [k]: e.target.value }));
@@ -39,7 +39,6 @@ export function AdminLogin() {
       <form onSubmit={submit} className="space-y-5">
         <TextField label="Email" type="email" autoComplete="username" value={form.email} onChange={set("email")} />
         <PasswordField label="Password" autoComplete="current-password" value={form.password} onChange={set("password")} />
-        <TextField label="Authenticator code" inputMode="numeric" autoComplete="one-time-code" maxLength={6} hint="The 6 digits from your authenticator app." value={form.code} onChange={set("code")} />
         {error ? <p role="alert" className="rounded-ui border-2 border-danger px-4 py-3 font-bold text-danger">{error}</p> : null}
         <Button type="submit" size="lg" block loading={busy}>Sign in</Button>
       </form>
