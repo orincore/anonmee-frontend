@@ -6,8 +6,6 @@ import { AppShell } from "@/components/layout/app-shell";
 import { ErrorState, ScreenTimeTracker } from "@/components/shared";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChromeProvider } from "@/providers/chrome-provider";
-import { SocketProvider } from "@/providers/socket-provider";
-import { UnreadProvider } from "@/providers/unread-provider";
 import { useAuth } from "@/providers/auth-provider";
 
 /** Guards the signed-in app: guests go to log in; signed-in people get the realtime connection and the shell. */
@@ -35,13 +33,9 @@ export function AppGate({ children }: { children: React.ReactNode }) {
     );
   }
   return (
-    <SocketProvider>
-      <UnreadProvider>
-        <ChromeProvider>
-          <ScreenTimeTracker />
-          <AppShell>{children}</AppShell>
-        </ChromeProvider>
-      </UnreadProvider>
-    </SocketProvider>
+    <ChromeProvider>
+      <ScreenTimeTracker />
+      <AppShell>{children}</AppShell>
+    </ChromeProvider>
   );
 }

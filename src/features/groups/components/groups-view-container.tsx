@@ -3,8 +3,6 @@
 import { AppShell } from "@/components/layout/app-shell";
 import { ScreenTimeTracker } from "@/components/shared";
 import { ChromeProvider } from "@/providers/chrome-provider";
-import { SocketProvider } from "@/providers/socket-provider";
-import { UnreadProvider } from "@/providers/unread-provider";
 import { useAuth } from "@/providers/auth-provider";
 import type { PublicGroup } from "@/lib/public-groups";
 import { GroupsScreen } from "./groups-screen";
@@ -24,16 +22,12 @@ export function GroupsViewContainer({ initialGroups }: GroupsViewContainerProps)
 
   if (state.status === "authed" && state.me.emailVerified) {
     return (
-      <SocketProvider>
-        <UnreadProvider>
-          <ChromeProvider>
-            <ScreenTimeTracker />
-            <AppShell>
-              <GroupsScreen />
-            </AppShell>
-          </ChromeProvider>
-        </UnreadProvider>
-      </SocketProvider>
+      <ChromeProvider>
+        <ScreenTimeTracker />
+        <AppShell>
+          <GroupsScreen />
+        </AppShell>
+      </ChromeProvider>
     );
   }
 

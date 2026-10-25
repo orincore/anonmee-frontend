@@ -1,4 +1,6 @@
 import { AuthProvider } from "@/providers/auth-provider";
+import { SocketProvider } from "@/providers/socket-provider";
+import { UnreadProvider } from "@/providers/unread-provider";
 
 /*
  * Who is signed in is only known in the browser (the session cookie belongs to the API, not to this site),
@@ -10,5 +12,11 @@ export const instant = false;
 
 // Everything that needs to know who is signed in lives under this layout. Public pages stay outside it.
 export default function SessionLayout({ children }: { children: React.ReactNode }) {
-  return <AuthProvider>{children}</AuthProvider>;
+  return (
+    <AuthProvider>
+      <SocketProvider>
+        <UnreadProvider>{children}</UnreadProvider>
+      </SocketProvider>
+    </AuthProvider>
+  );
 }
