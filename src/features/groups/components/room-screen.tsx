@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { ErrorState } from "@/components/shared";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useApi } from "@/hooks/use-api";
+import { useUnread } from "@/providers/unread-provider";
 import { api, ApiError } from "@/lib/api";
 import { RoomView } from "./room-view";
 
@@ -13,6 +14,7 @@ interface GroupInfo { group: { id: string; title: string; topic: string; memberC
 /** A group: look it up, join it (safe to repeat), then show the room. Leaving takes you back to the list. */
 function GroupRoom({ id }: { id: string }) {
   const router = useRouter();
+  const { refresh } = useUnread();
   const info = useApi<GroupInfo>(`/groups/${id}`);
   const [joined, setJoined] = useState(false);
   const [joinError, setJoinError] = useState<string>();
@@ -37,6 +39,7 @@ function GroupRoom({ id }: { id: string }) {
       showMembers
       onLeave={async () => {
         await api(`/groups/${id}/leave`, { method: "POST", body: {} }).catch(() => {});
+        void refresh();
         router.replace("/groups");
       }}
     />
