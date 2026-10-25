@@ -112,13 +112,6 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-paper/10 pt-8 text-xs text-paper/60 sm:flex-row">
           <p>© 2026 Anonmee. All rights reserved. 100% Anonymous Dating & Social Platform.</p>
-          <div className="flex items-center gap-4">
-            <Link href="/llms.txt" className="hover:underline">llms.txt</Link>
-            <span>•</span>
-            <Link href="/sitemap.xml" className="hover:underline">Sitemap</Link>
-            <span>•</span>
-            <Link href="/opensearch.xml" className="hover:underline">OpenSearch</Link>
-          </div>
         </div>
       </div>
     </footer>
