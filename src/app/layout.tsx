@@ -30,29 +30,6 @@ export const metadata: Metadata = {
   },
   manifest: "/manifest.webmanifest",
   robots: { index: true, follow: true },
-  openGraph: {
-    title: "Anonmee — 100% Anonymous Chat & Dating (18+)",
-    description: "Zero photos, no real names, pure conversation. Connect with singles & strangers worldwide in real-time.",
-    url: SITE.url,
-    siteName: SITE.name,
-    locale: "en_US",
-    type: "website",
-    images: [
-      {
-        url: `${SITE.url}/og-image.png`,
-        width: 1200,
-        height: 630,
-        type: "image/png",
-        alt: "Anonmee — 100% Anonymous Chat & Dating (18+)",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Anonmee — 100% Anonymous Chat & Dating (18+)",
-    description: "Zero photos, no real names, pure conversation. Connect with singles & strangers worldwide in real-time.",
-    images: [`${SITE.url}/og-image.png`],
-  },
 };
 
 export const viewport: Viewport = {

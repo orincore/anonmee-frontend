@@ -19,6 +19,7 @@ export const metadata: Metadata = {
     url: SITE.url,
     locale: "en_US",
     images: [
+      { url: "/og-image.png", width: 1200, height: 630, alt: "Anonmee — 100% Anonymous Chat & Dating (18+)" },
       { url: "/anonme-logo.png", width: 1254, height: 1254, alt: "Anonmee Dating App Logo - Free Anonymous Dating & Stranger Chat" },
       { url: "/opengraph-image", width: 1200, height: 630, alt: "Anonmee Dating App: Anonymous Dating, Friendship & Stranger Chat" },
     ],
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: SITE.title,
     description: SITE.description,
-    images: ["/anonme-logo.png"],
+    images: ["/og-image.png"],
     creator: `@${SITE.name.toLowerCase()}`,
   },
   robots: {
