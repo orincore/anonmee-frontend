@@ -5,7 +5,7 @@ export const metadata: Metadata = { title: "User" };
 export const instant = false;
 
 export function generateStaticParams() {
-  return [];
+  return [{ id: "preview" }];
 }
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
