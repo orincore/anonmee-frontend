@@ -1,6 +1,6 @@
-import { ArrowRight, ChatCircleDots, LockKey, ShieldCheck, Sparkle, UserSwitch, UsersThree } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRight, ChatCircleDots, LockKey, ShareNetwork, ShieldCheck, Sparkle, UserSwitch, UsersThree } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
-import { Breadcrumbs } from "@/components/shared";
+import { Breadcrumbs, ShareButton } from "@/components/shared";
 import { Navbar, Footer } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import type { PublicGroup } from "@/lib/public-groups";
@@ -136,6 +136,23 @@ export function PublicGroupPreview({ group }: PublicGroupPreviewProps) {
               <Button asChild variant="secondary" size="lg" className="w-full sm:w-auto">
                 <Link href={loginHref}>I already have an account</Link>
               </Button>
+              <ShareButton
+                title={`${group.title} — Anonymous #${group.topic} Group Chat`}
+                text={
+                  isGlobal
+                    ? "Come chat anonymously with me on Anonmee — zero photos, 100% private:"
+                    : `Join the anonymous #${group.topic} chat "${group.title}" on Anonmee — zero photos, 100% private:`
+                }
+                url={`/groups/${group.id}`}
+                roomId={group.id}
+                variant="secondary"
+                size="lg"
+                className="w-full sm:w-auto"
+                ariaLabel="Share this group"
+              >
+                <ShareNetwork aria-hidden weight="bold" className="size-5" />
+                Share & Invite
+              </ShareButton>
             </div>
           </article>
 

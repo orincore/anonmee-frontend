@@ -59,7 +59,7 @@ export default function OpengraphImage() {
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: 28, color: "#f6f7ff" }}>
           <span>Zero photo bias • Pure intent matching • 100% Free text chat</span>
           <span style={{ background: "#ffa07e", color: "#14111c", padding: "6px 20px", borderRadius: 12, fontWeight: 800 }}>
-            anonmee.in
+            anonmee.orincore.com
           </span>
         </div>
       </div>

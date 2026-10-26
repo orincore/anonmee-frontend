@@ -1,7 +1,7 @@
-import { ArrowRight, ChatCircleDots, ShieldCheck, Sparkle, UserSwitch, UsersThree } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRight, ChatCircleDots, ShareNetwork, ShieldCheck, Sparkle, UserSwitch, UsersThree } from "@phosphor-icons/react/dist/ssr";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Breadcrumbs, SectionHeading } from "@/components/shared";
+import { Breadcrumbs, SectionHeading, ShareButton } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import { SITE } from "@/lib/site";
 import { TOPICS } from "@/lib/topics";
@@ -146,6 +146,18 @@ export default function GlobalChatPage() {
           <Button asChild variant="secondary" size="lg">
             <Link href="/groups">Browse Community Groups</Link>
           </Button>
+          <ShareButton
+            title="Global Chat — Live Anonymous Global Chatroom (18+) | Anonmee"
+            text="Come chat anonymously with me on Anonmee Global Chat — zero photos, 100% private:"
+            url="/global-chat"
+            roomId="global"
+            variant="secondary"
+            size="lg"
+            ariaLabel="Share Global Chat"
+          >
+            <ShareNetwork aria-hidden weight="bold" className="size-5" />
+            Share & Invite
+          </ShareButton>
         </div>
       </section>
 

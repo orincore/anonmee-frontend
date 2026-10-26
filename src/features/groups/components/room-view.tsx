@@ -3,7 +3,7 @@
 import { CaretLeft, DotsThreeVertical, UsersThree } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useState } from "react";
-import { Composer, ErrorState, MessageList, ReportSheet, type ChatLine } from "@/components/shared";
+import { Composer, ErrorState, MessageList, ReportSheet, ShareButton, type ChatLine } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import { ChatMenuSheet } from "@/features/chat/components/chat-menu-sheet";
 import { useModeration } from "@/hooks/use-moderation";
@@ -47,6 +47,17 @@ export function RoomView({ roomId, title, subtitle, enabled, onLeave, showMember
           <h1 className="display truncate text-2xl leading-none">{title}</h1>
           <p className="truncate text-sm text-muted">{subtitle}</p>
         </div>
+        <ShareButton
+          title={`Join ${title} on Anonmee`}
+          text={
+            roomId === "global"
+              ? "Come chat anonymously with me on Anonmee — zero photos, 100% private:"
+              : `Come chat anonymously with me in "${title}" on Anonmee — zero photos, 100% private:`
+          }
+          url={`/groups/${roomId}`}
+          roomId={roomId}
+          ariaLabel="Share & Invite"
+        />
         {showMembers ? <Button variant="ghost" size="icon" aria-label="See who is here" onClick={() => setMembers(true)}><UsersThree aria-hidden weight="bold" className="size-6" /></Button> : null}
         {onLeave ? <Button variant="ghost" size="icon" aria-label="Group options" onClick={() => setMenu(true)}><DotsThreeVertical aria-hidden weight="bold" className="size-6" /></Button> : null}
       </header>

@@ -10,6 +10,7 @@ interface Overview {
   totalUsers: number; newUsers: number; newUsersPrevious: number; bannedUsers: number; onlineNow: number;
   matches: number; averageWaitMs: number; matchSuccessRate: number | null; groupsCreated: number; messagesSent: number; openReports: number;
   daily: { day: string; users: number; matches: number }[];
+  viralShares?: number;
 }
 
 function Body({ days }: { days: number }) {
@@ -29,6 +30,7 @@ function Body({ days }: { days: number }) {
         <StatCard label="Average wait" value={`${(data.averageWaitMs / 1000).toFixed(1)}s`} />
         <StatCard label="Chats that lasted a minute" value={data.matchSuccessRate === null ? "n/a" : `${data.matchSuccessRate}%`} />
         <StatCard label="Messages in groups" value={data.messagesSent} note={`${data.groupsCreated} new groups`} />
+        <StatCard label="Viral shares & invites" value={data.viralShares ?? 0} tone="pop" note="WhatsApp, Telegram, X, Reddit" />
       </div>
       <section className="space-y-3">
         <h2 className="display text-2xl">New users per day</h2>

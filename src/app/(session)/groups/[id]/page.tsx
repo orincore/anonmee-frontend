@@ -21,7 +21,14 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         siteName: SITE.name,
         locale: "en_US",
         type: "website",
-        images: [{ url: `${SITE.url}/anonme-logo.png`, width: 1200, height: 630, alt: "Anonmee Global Chat" }],
+        images: [{ url: `${SITE.url}/og-image.png`, width: 1200, height: 630, alt: "Anonmee Global Chat" }],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: "Global Chat — Live Anonymous Global Chatroom (18+) | Anonmee",
+        description:
+          "Connect with singles, adults, and strangers worldwide in real-time with 100% anonymity. Zero photos, no real names.",
+        images: [`${SITE.url}/og-image.png`],
       },
     };
   }
