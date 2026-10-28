@@ -12,6 +12,7 @@ import { TypingDots } from "./typing-dots";
 export interface MessageListProps {
   lines: ChatLine[];
   typing?: boolean;
+  typists?: string[];
   /** Show who wrote each message (groups). One-to-one chats leave this off. */
   showAuthors?: boolean;
   hasMore?: boolean;
@@ -33,7 +34,7 @@ const NEAR_BOTTOM = 96;
  * messages stays smooth. It sticks to the bottom for new messages unless you have scrolled up, and
  * loads older ones when you reach the top without moving what you are reading.
  */
-export function MessageList({ lines, typing, showAuthors, hasMore, loadingOlder, onLoadOlder, onRetry, onAuthorTap, onReply, onReact, empty }: MessageListProps) {
+export function MessageList({ lines, typing, typists, showAuthors, hasMore, loadingOlder, onLoadOlder, onRetry, onAuthorTap, onReply, onReact, empty }: MessageListProps) {
   const ref = useRef<HTMLDivElement>(null);
   const atBottom = useRef(true);
   const prev = useRef({ first: "", len: 0 });
@@ -91,9 +92,14 @@ export function MessageList({ lines, typing, showAuthors, hasMore, loadingOlder,
             {virt.getVirtualItems().map((v) => {
               const line = lines[v.index];
               const dash = "absolute left-0 top-0 w-full pb-2.5";
+              const typingLabel = typists && typists.length > 0
+                ? typists.length >= 2
+                  ? `${typists.length} people are typing...`
+                  : `${typists[0]} is typing...`
+                : undefined;
               return (
                 <div key={v.key} data-index={v.index} ref={virt.measureElement} className={dash} style={{ transform: `translateY(${v.start}px)` }}>
-                  {line ? <MessageRow line={line} prev={lines[v.index - 1]} showAuthor={!!showAuthors} onRetry={onRetry} onAuthorTap={onAuthorTap} onMenu={onReply && onReact ? (l, at) => setMenu({ line: l, at }) : undefined} onReact={onReact} onJump={jump} /> : <TypingDots />}
+                  {line ? <MessageRow line={line} prev={lines[v.index - 1]} showAuthor={!!showAuthors} onRetry={onRetry} onAuthorTap={onAuthorTap} onMenu={onReply && onReact ? (l, at) => setMenu({ line: l, at }) : undefined} onReact={onReact} onJump={jump} /> : <TypingDots label={typingLabel} />}
                 </div>
               );
             })}

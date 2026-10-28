@@ -29,9 +29,11 @@ export function useRoom(roomId: string, enabled: boolean) {
   const [hasMore, setHasMore] = useState(() => cached?.hasMore ?? false);
   const [loadingOlder, setLoadingOlder] = useState(false);
   const [error, setError] = useState<string>();
+  const [typists, setTypists] = useState<string[]>([]);
   const linesRef = useRef(lines);
   const youRef = useRef<string | undefined>(cached?.you);
   const joiningRef = useRef(false);
+  const typistsTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
     linesRef.current = lines;
@@ -93,13 +95,25 @@ export function useRoom(roomId: string, enabled: boolean) {
       }
     };
 
+    const onTyping = (d: { roomId: string; typists: string[] }) => {
+      if (d.roomId === roomId) {
+        const others = d.typists.filter((t) => t !== youRef.current && t !== you);
+        setTypists(others);
+        clearTimeout(typistsTimer.current);
+        typistsTimer.current = setTimeout(() => setTypists([]), 4500);
+      }
+    };
+
     socket.on(EV.roomMessage, onMessage);
     socket.on(EV.roomReactions, onReactions);
+    socket.on(EV.roomTyping, onTyping);
     socket.on("connect", onConnect);
 
     return () => {
+      clearTimeout(typistsTimer.current);
       socket.off(EV.roomMessage, onMessage);
       socket.off(EV.roomReactions, onReactions);
+      socket.off(EV.roomTyping, onTyping);
       socket.off("connect", onConnect);
       if (roomId !== "global") {
         void emitAck(socket, EV.roomLeave, { roomId }).catch(() => {});
@@ -169,5 +183,5 @@ export function useRoom(roomId: string, enabled: boolean) {
     void join();
   }, [join]);
 
-  return { lines, you, hasMore, loadingOlder, error, loadOlder, send, retry, react, rejoin };
+  return { lines, you, hasMore, loadingOlder, error, loadOlder, send, retry, react, rejoin, typists };
 }
