@@ -12,7 +12,7 @@ const BLOBS = [
 ] as const;
 
 /** "Waiting, finding a match for you". Shown the instant you tap Start, so it never feels like nothing happened. */
-export function SearchingView({ onCancel }: { onCancel: () => void }) {
+export function SearchingView({ onCancel, notice }: { onCancel: () => void; notice?: string }) {
   const reduce = useReducedMotion();
   const { online } = useSocket();
   return (
@@ -29,6 +29,7 @@ export function SearchingView({ onCancel }: { onCancel: () => void }) {
         ))}
       </div>
       <div className="space-y-3">
+        {notice ? <p className="mx-auto max-w-xs rounded-ui border-2 border-edge bg-pop/20 px-4 py-3 text-base font-bold">{notice}</p> : null}
         <h1 className="display text-display">Waiting, finding a match for you</h1>
         <p className="mx-auto max-w-xs text-lg text-muted">Hang tight. We are looking for someone who fits.</p>
         <OnlineCounter count={online} />

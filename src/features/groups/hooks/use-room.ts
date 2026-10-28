@@ -115,9 +115,8 @@ export function useRoom(roomId: string, enabled: boolean) {
       socket.off(EV.roomReactions, onReactions);
       socket.off(EV.roomTyping, onTyping);
       socket.off("connect", onConnect);
-      if (roomId !== "global") {
-        void emitAck(socket, EV.roomLeave, { roomId }).catch(() => {});
-      }
+      // Tell the server we stopped looking. For the global room it stays joined (unread counts), it just stops being watched.
+      void emitAck(socket, EV.roomLeave, { roomId }).catch(() => {});
     };
   }, [socket, connected, enabled, roomId, join, toLine]);
 

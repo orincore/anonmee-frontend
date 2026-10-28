@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Archivo, Geist, Geist_Mono } from "next/font/google";
 import { SITE } from "@/lib/site";
 import "./globals.css";
@@ -123,35 +124,31 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${sans.variable} ${mono.variable} ${display.variable} h-full`} suppressHydrationWarning>
       <head suppressHydrationWarning>
-        {/* Google tag (gtag.js) */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-9CPHCFQPWW" />
-        <script
-          id="google-tag-gtag"
-          dangerouslySetInnerHTML={{
-            __html: `window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-9CPHCFQPWW');`,
-          }}
-        />
-        {/* Google Tag Manager */}
-        <script
-          id="google-tag-manager"
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-K8BGV4J7');`,
-          }}
-        />
-        {/* End Google Tag Manager */}
         <link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title={SITE.name} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <script id="theme-script" dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} suppressHydrationWarning />
       </head>
       <body className="min-h-[100dvh] flex flex-col">
+        {/*
+          Google tags load after the page has hydrated, through next/script. Raw <script> tags in <head> were
+          rewritten by browser extensions (tag blockers, privacy tools) before React started, which showed up as
+          a hydration mismatch error. Same IDs and behaviour as before.
+        */}
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-9CPHCFQPWW" strategy="afterInteractive" />
+        <Script id="google-tag-gtag" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-9CPHCFQPWW');`}
+        </Script>
+        <Script id="google-tag-manager" strategy="afterInteractive">
+          {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-K8BGV4J7');`}
+        </Script>
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe

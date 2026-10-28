@@ -9,6 +9,10 @@ import { timeAgo } from "@/lib/format";
 
 export interface Escalation {
   id: string; reason: string; evidence: string | null; status: string; createdAt: number;
+  /** Filed by an AI user after it warned or left the person. Staff decide what happens. */
+  aiFlagged?: boolean;
+  /** A death, rape or stalking threat: the AI user left at once. */
+  severe?: boolean;
   reported: { id: string; username: string; gender: Gender; age: number; banned: boolean; distinctReporters: number };
 }
 
@@ -38,14 +42,20 @@ export function EscalationCard({ item, onDone }: { item: Escalation; onDone: (id
   }
 
   return (
-    <article className="space-y-4 rounded-card border-2 border-edge bg-surface p-5">
+    <article className={`space-y-4 rounded-card border-2 bg-surface p-5 ${item.severe ? "border-danger" : "border-edge"}`}>
+      {item.aiFlagged || item.severe ? (
+        <div className="flex flex-wrap gap-2">
+          {item.severe ? <span className="rounded-full border-2 border-danger bg-danger/10 px-3 py-1 text-xs font-bold text-danger">Severe threat</span> : null}
+          {item.aiFlagged ? <span className="rounded-full border-2 border-edge bg-pop px-3 py-1 text-xs font-bold text-pop-fg">AI flagged</span> : null}
+        </div>
+      ) : null}
       <header className="flex flex-wrap items-baseline justify-between gap-2">
         <p className="font-bold">{item.reason}</p>
         <p className="font-mono text-xs text-muted">{timeAgo(item.createdAt)}</p>
       </header>
       <p className="text-[15px]">
         <a href={`/admin/users/${r.id}`} className="font-bold underline underline-offset-2">{r.username}</a>, {GENDER_LABEL[r.gender]}, {r.age}.{" "}
-        {r.distinctReporters} {r.distinctReporters === 1 ? "person has" : "people have"} reported them.{r.banned ? " Already banned." : ""}
+        {r.distinctReporters} {r.distinctReporters === 1 ? "report" : "reports"} on this account.{r.banned ? " Already banned." : ""}
       </p>
       {item.evidence ? <pre className="max-h-40 overflow-auto whitespace-pre-wrap rounded-ui bg-elevated p-3 text-sm">{item.evidence}</pre> : <p className="text-sm text-muted">No messages saved.</p>}
       <div className="flex flex-wrap gap-2">

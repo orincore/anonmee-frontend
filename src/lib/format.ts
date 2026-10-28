@@ -12,3 +12,6 @@ export function timeAgo(ms: number): string {
   if (s < 86400) return rtf.format(-Math.round(s / 3600), "hour");
   return rtf.format(-Math.round(s / 86400), "day");
 }
+
+/** "9+" past nine: a badge only has to say "there is more", and the AI only keeps about ten unread waiting. */
+export const formatUnread = (n: number): string => (n > 9 ? "9+" : String(n));

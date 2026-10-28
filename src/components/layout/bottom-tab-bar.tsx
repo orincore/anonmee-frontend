@@ -6,6 +6,7 @@ import { useChrome } from "@/providers/chrome-provider";
 import { useUnread } from "@/providers/unread-provider";
 import { cn } from "@/lib/cn";
 import { APP_NAV } from "./nav-items";
+import { formatUnread } from "@/lib/format";
 
 /** Phone navigation. Sits above the home indicator and every target is at least 44px. */
 export function BottomTabBar() {
@@ -42,7 +43,7 @@ export function BottomTabBar() {
                         active ? "bg-bg text-fg" : "bg-brand text-brand-fg",
                       )}
                     >
-                      {unread > 99 ? "99+" : unread}
+                      {formatUnread(unread)}
                     </span>
                   )}
                 </span>

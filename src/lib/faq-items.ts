@@ -6,6 +6,10 @@ export interface FaqItem {
 /** Plain text answers shared across landing FAQ, FAQ page, JSON-LD structured data, and LLM text files. */
 export const FAQ_ITEMS: FaqItem[] = [
   {
+    q: "Are all the people on Anonmee real?",
+    a: "Not always. Some chat partners may be AI-powered companions that keep the app lively when it is quiet. They show a random name, gender and age like everyone else, and they can joke, flirt and, in one-to-one chats, take part in adult conversation, but only with people who chose matching options when they signed up. If you sincerely ask whether you are talking to an AI, it will say so, and you can leave, block or report any chat.",
+  },
+  {
     q: "What is Anonmee Dating App?",
     a: "Anonmee is the premier free anonymous dating app and private stranger chat platform for adults 18+. Unlike traditional dating apps that force you to upload photos and swipe endlessly on appearances, Anonmee matches you with singles and strangers based strictly on mutual intent (dating, romance, flirting, deep conversation, or friendship) with zero photo pressure. Your identity is 100% protected under a random pseudonym, and chats are ephemeral.",
   },

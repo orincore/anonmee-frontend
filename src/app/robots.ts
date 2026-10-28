@@ -5,7 +5,7 @@ import { SITE } from "@/lib/site";
 // User-private and authentication segments remain protected.
 export default function robots(): MetadataRoute.Robots {
   // Only strictly private segments remain disallowed: 1-on-1 private chats (/chat), private settings (/me), admin console, auth
-  const disallowed = ["/home", "/chat", "/me", "/admin", "/login", "/signup"];
+  const disallowed = ["/home", "/chat", "/me", "/admin", "/login", "/signup", "/forgot-password"];
 
   const publicPaths = [
     "/",

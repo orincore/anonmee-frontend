@@ -3,6 +3,9 @@ import { GroupViewContainer } from "@/features/groups/components/group-view-cont
 import { getPublicGroup } from "@/lib/public-groups";
 import { SITE } from "@/lib/site";
 
+// Signed-in screens load on the client, so there is nothing for Next to pre-render. See (session)/layout.tsx.
+export const instant = false;
+
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const group = await getPublicGroup(id);

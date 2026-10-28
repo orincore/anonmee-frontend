@@ -6,6 +6,7 @@ import { PreferencesSheet } from "@/components/shared";
 import { usePreferences } from "@/hooks/use-preferences";
 import { useImmersive } from "@/providers/chrome-provider";
 import { useSocket } from "@/providers/socket-provider";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useMatch } from "../hooks/use-match";
 import { ChatView } from "./chat-view";
 import { IdleView } from "./idle-view";
@@ -32,10 +33,17 @@ export function MatchScreen() {
 
   return (
     <>
-      {phase.kind === "searching" ? <SearchingView onCancel={cancel} /> : null}
+      {phase.kind === "loading" ? (
+        <section aria-busy="true" aria-label="Loading" className="flex min-h-[calc(100dvh-5rem)] flex-col items-center justify-center gap-6 px-4 md:min-h-[100dvh]">
+          <Skeleton className="h-28 w-28 rounded-full" />
+          <Skeleton className="h-8 w-64" />
+          <Skeleton className="h-5 w-48" />
+        </section>
+      ) : null}
+      {phase.kind === "searching" ? <SearchingView onCancel={cancel} notice={phase.notice} /> : null}
       {phase.kind === "idle" ? <IdleView title="Meet someone new." body="We will pair you with a stranger who wants the same kind of chat. Only your gender and age are shown." error={phase.error} primaryLabel="Start matching" onStart={start} secondary={{ label: "What I am looking for", onClick: () => setEditing(true) }} /> : null}
       {phase.kind === "timeout" ? <IdleView title="No one yet." body="Nobody who fits is around right now. Keep waiting, or widen what you are looking for." primaryLabel="Keep waiting" onStart={start} secondary={{ label: "Change preferences", onClick: () => setEditing(true) }} /> : null}
-      {phase.kind === "chatting" ? <ChatView key={phase.chat.id} chat={phase.chat} ended={phase.ended} onLeave={leave} onNext={() => { reset(); void start(); }} onSkip={skip} /> : null}
+      {phase.kind === "chatting" ? <ChatView key={phase.chat.id} chat={phase.chat} ended={phase.ended} endedReason={phase.endedReason} onLeave={leave} onNext={() => { reset(); void start(); }} onSkip={skip} /> : null}
       {preferences ? <PreferencesSheet open={editing} onOpenChange={setEditing} value={preferences} onSave={save} /> : null}
     </>
   );

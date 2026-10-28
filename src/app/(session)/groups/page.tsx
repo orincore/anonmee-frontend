@@ -3,6 +3,9 @@ import { GroupsViewContainer } from "@/features/groups/components/groups-view-co
 import { getPublicGroups } from "@/lib/public-groups";
 import { SITE } from "@/lib/site";
 
+// Signed-in screens load on the client, so there is nothing for Next to pre-render. See (session)/layout.tsx.
+export const instant = false;
+
 export const metadata: Metadata = {
   title: "Anonymous Groups & Community Chatrooms | Anonmee Dating App",
   description:

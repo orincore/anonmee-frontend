@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useUnread } from "@/providers/unread-provider";
 import { cn } from "@/lib/cn";
+import { formatUnread } from "@/lib/format";
 
 export interface GroupCardData {
   id: string;
@@ -34,7 +35,7 @@ export function GroupCard({ group, className }: { group: GroupCardData; classNam
         </span>
         {unread > 0 && (
           <span className="inline-flex items-center gap-1 rounded-full border border-edge bg-brand px-2.5 py-0.5 font-mono text-xs font-bold text-brand-fg shadow-sticker-sm">
-            <span>{unread > 99 ? "99+" : unread}</span>
+            <span>{formatUnread(unread)}</span>
             <span className="font-sans text-[11px] font-normal">new</span>
           </span>
         )}

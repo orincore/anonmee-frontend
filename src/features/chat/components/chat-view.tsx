@@ -14,13 +14,15 @@ import { ChatMenuSheet } from "./chat-menu-sheet";
 export interface ChatViewProps {
   chat: ChatSession;
   ended: boolean;
+  /** Why the other side closed the chat, when they did. */
+  endedReason?: string;
   onLeave: () => void;
   onNext: () => void;
   onSkip?: () => void;
 }
 
 /** A live one-to-one chat: who you are talking to, the messages, and the box to reply. */
-export function ChatView({ chat, ended, onLeave, onNext, onSkip }: ChatViewProps) {
+export function ChatView({ chat, ended, endedReason, onLeave, onNext, onSkip }: ChatViewProps) {
   useViewportHeight();
   const { lines, typing, send, retry, react, notifyTyping } = useChatSession(chat);
   const [replying, setReplying] = useState<ChatLine>();
@@ -63,7 +65,7 @@ export function ChatView({ chat, ended, onLeave, onNext, onSkip }: ChatViewProps
       />
       {ended ? (
         <div className="space-y-3 border-t-2 border-edge bg-surface p-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">
-          <p className="text-center font-bold">This chat has ended.</p>
+          <p className="text-center font-bold">{endedReason === "idle" ? "The other user left because the chat went quiet." : "This chat has ended."}</p>
           <Button size="lg" block onClick={onNext}>
             Find someone new
           </Button>

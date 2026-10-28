@@ -17,6 +17,8 @@ export interface NumberTickerProps {
   stagger?: number;
   /** Render only after the element enters the viewport. */
   startOnView?: boolean;
+  /** Roll from 0 to the value when first shown. Turn off for live counts, which should appear at their value and only roll on change. */
+  animateOnMount?: boolean;
   prefix?: string;
   suffix?: string;
   /** Add a small blur during digit rolls. */
@@ -38,6 +40,7 @@ export function NumberTicker({
   duration = 0.9,
   stagger = 0.04,
   startOnView = true,
+  animateOnMount = true,
   prefix,
   suffix,
   blur = false,
@@ -103,6 +106,7 @@ export function NumberTicker({
             <Digit
               key={id}
               digit={armed ? digit : 0}
+              animateOnMount={animateOnMount}
               delay={entered ? 0 : i * stagger}
               duration={duration}
               blur={blur}
@@ -118,12 +122,14 @@ export function NumberTicker({
 
 function Digit({
   digit,
+  animateOnMount,
   delay,
   duration,
   blur,
   className,
 }: {
   digit: number;
+  animateOnMount: boolean;
   delay: number;
   duration: number;
   blur: boolean;
@@ -161,7 +167,7 @@ function Digit({
     >
       <motion.span
         ref={columnRef}
-        initial={{ y: 0 }}
+        initial={animateOnMount ? { y: 0 } : false}
         animate={{ y: `-${digit * DIGIT_HEIGHT_EM}em` }}
         transition={
           reduce

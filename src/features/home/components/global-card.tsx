@@ -3,6 +3,7 @@
 import { ChatsCircle } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import { useUnread } from "@/providers/unread-provider";
+import { formatUnread } from "@/lib/format";
 
 /** A link into the room everybody shares. */
 export function GlobalCard() {
@@ -19,7 +20,7 @@ export function GlobalCard() {
           <span className="display block text-2xl">Everyone</span>
           {globalUnread > 0 && (
             <span className="inline-flex items-center gap-1 rounded-full border border-edge bg-brand px-2.5 py-0.5 font-mono text-xs font-bold text-brand-fg shadow-sticker-sm">
-              <span>{globalUnread > 99 ? "99+" : globalUnread}</span>
+              <span>{formatUnread(globalUnread)}</span>
               <span className="font-sans text-[11px] font-normal">new</span>
             </span>
           )}

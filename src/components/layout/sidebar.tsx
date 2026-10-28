@@ -7,6 +7,7 @@ import { useUnread } from "@/providers/unread-provider";
 import { cn } from "@/lib/cn";
 import { APP_NAV } from "./nav-items";
 import { SidebarProfile } from "./sidebar-profile";
+import { formatUnread } from "@/lib/format";
 
 /** Desktop rail: navigation links with unread count badges, plus the live counter and profile. */
 export function Sidebar({ online }: { online: number | null }) {
@@ -50,7 +51,7 @@ export function Sidebar({ online }: { online: number | null }) {
                           active ? "bg-bg text-fg" : "bg-brand text-brand-fg",
                         )}
                       >
-                        {unread > 99 ? "99+" : unread}
+                        {formatUnread(unread)}
                       </span>
                     )}
                   </Link>
