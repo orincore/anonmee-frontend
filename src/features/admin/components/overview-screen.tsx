@@ -4,6 +4,7 @@ import { useState } from "react";
 import { BarSeries, ErrorState, StatCard } from "@/components/shared";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useApi } from "@/hooks/use-api";
+import { AiSwitch } from "./ai-switch";
 import { DaysPicker } from "./days-picker";
 
 interface Overview {
@@ -49,6 +50,7 @@ export function OverviewScreen() {
   return (
     <div className="space-y-6">
       <h1 className="display text-4xl">Overview</h1>
+      <AiSwitch />
       <DaysPicker value={days} onChange={setDays} />
       <Body key={days} days={days} />
     </div>

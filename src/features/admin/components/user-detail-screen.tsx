@@ -8,6 +8,7 @@ import { INTENT_LABELS, type Gender, type Intent } from "@/contracts";
 import { useApi } from "@/hooks/use-api";
 import { api } from "@/lib/api";
 import { formatDateTime } from "@/lib/format";
+import { UserActivity } from "./user-activity";
 
 interface Detail {
   user: {
@@ -94,6 +95,7 @@ export function UserDetailScreen({ id }: { id: string }) {
         ) : null}
         {Object.entries(u.counts).map(([k, v]) => <Field key={k} label={COUNT_LABELS[k] ?? k}>{v}</Field>)}
       </dl>
+      <UserActivity userId={id} />
     </div>
   );
 }
