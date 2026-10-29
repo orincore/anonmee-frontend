@@ -15,6 +15,7 @@ interface ChatRow {
   id: string; intent: Intent; startedAt: number; endedAt: number | null; endedReason: string | null;
   partner: { gender: Gender; age: number; ai: boolean };
   reports: { reason: string; evidence: string | null }[];
+  transcript: { alias: string; mine: boolean; text: string; at: number }[];
 }
 
 function duration(from: number, to: number | null): string {
@@ -54,7 +55,7 @@ function Chats({ userId }: { userId: string }) {
   if (items.length === 0) return <EmptyState icon={ChatsCircle} title="No 1:1 chats" body="This person has not been matched yet." />;
   return (
     <div className="space-y-3">
-      <p className="text-sm text-muted">1:1 chats are deleted when they end. Only messages saved with a report are shown.</p>
+      <p className="text-sm text-muted">1:1 text is shown only when chat records are switched on (CHAT_REVIEW_ENABLED) or saved with a report.</p>
       <ul className="space-y-2">
         {items.map((c) => (
           <li key={c.id} className="rounded-ui border-2 border-line p-3">
@@ -64,6 +65,15 @@ function Chats({ userId }: { userId: string }) {
               <span className="font-mono">{formatDateTime(c.startedAt)}</span>
             </p>
             <p className="text-sm">Lasted {duration(c.startedAt, c.endedAt)}{c.endedReason ? `, ended: ${c.endedReason}` : ""}</p>
+            {c.transcript.length ? (
+              <ol className="mt-2 space-y-1 rounded-ui bg-elevated p-2 text-sm" aria-label="Chat transcript">
+                {c.transcript.map((m, i) => (
+                  <li key={i} className={m.mine ? "font-bold" : ""}>
+                    <span className="font-mono text-muted">{new Date(m.at).toLocaleTimeString()}</span> {m.mine ? "This user" : m.alias}: <span className="whitespace-pre-wrap break-words">{m.text}</span>
+                  </li>
+                ))}
+              </ol>
+            ) : null}
             {c.reports.map((r, i) => (
               <div key={i} className="mt-2 rounded-ui bg-elevated p-2 text-sm">
                 <p className="font-bold">Report: {r.reason}</p>
