@@ -32,3 +32,5 @@ export * from "./share-sheet";
 export * from "./ad-scripts";
 export * from "./ad-banner";
 export * from "./ad-native-banner";
+export * from "./ad-block-wall";
+export * from "./ad-block-gate";

@@ -34,3 +34,14 @@ export function pageAllowsAds(pathname: string | null): boolean {
   if (!ADS_ENABLED || !pathname) return false;
   return !AD_FREE_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 }
+
+/*
+ * The ad-blocker wall covers the whole app, except staff screens and the pages people need to read
+ * before deciding (what the ad network sees, terms, how to reach us, child safety).
+ */
+const WALL_EXEMPT_PREFIXES = ["/admin", "/privacy", "/terms", "/cookies", "/contact", "/child-safety", "/your-data"];
+
+export function pageNeedsAdsOn(pathname: string | null): boolean {
+  if (!ADS_ENABLED || !pathname) return false;
+  return !WALL_EXEMPT_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+}
