@@ -219,7 +219,7 @@ export const LOCATIONS: LocationItem[] = [
     country: "Germany",
     countryCode: "DE",
     headline: "Anonymous Dating & Safe Chat in Germany",
-    description: "Privacy-first anonymous chat and dating for adults across Germany. Strict data protection, text-only conversations, zero ads.",
+    description: "Privacy-first anonymous chat and dating for adults across Germany. Strict data protection, text-only conversations.",
     keywords: ["dating app germany", "anonymous dating germany", "stranger chat germany"],
     geo: { lat: 51.1657, lng: 10.4515 },
   },

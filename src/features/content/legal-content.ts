@@ -4,7 +4,7 @@ import type { ProseSection } from "./components/prose-page";
 const C = SITE.contact;
 
 export const PRIVACY_SECTIONS: ProseSection[] = [
-  { heading: "The short version", paragraphs: ["Other people on Anonmee only ever see a random name, your gender and your age. We collect as little as we can, we do not sell your data, we do not run advertising trackers, and you can delete your account yourself at any time."] },
+  { heading: "The short version", paragraphs: ["Other people on Anonmee only ever see a random name, your gender and your age. We collect as little as we can, we do not sell your data, we do not use our own advertising trackers (the ads we show come from a partner network, described in Cookies), and you can delete your account yourself at any time."] },
   {
     heading: "What we collect",
     paragraphs: ["When you sign up we collect only what the service needs:"],
@@ -37,7 +37,7 @@ export const PRIVACY_SECTIONS: ProseSection[] = [
   },
   { heading: "Who can see account details", paragraphs: ["A small safety team can look up account details, including your email and date of birth, to deal with abuse and to run the service. Access needs two-step login, is limited by role, and every time someone opens an account it is written to a log that cannot be edited. Staff cannot read live or past one-to-one chats."] },
   { heading: "AI companions and your messages", paragraphs: ["When you chat with an AI companion, the text of that chat (the last few messages) is sent to an AI service provider so it can write the replies. We never send your email, username, date of birth or any other account detail. We do not keep a one-to-one chat after it ends, except messages saved because of a report."] },
-  { heading: "Who we share data with", paragraphs: ["We do not sell your data and we do not share it for advertising. We use hosting and infrastructure providers to run Anonmee, and they process data only on our instructions. We may share information with the authorities when the law requires it or to protect someone from serious harm, and we will tell you when we are allowed to."] },
+  { heading: "Who we share data with", paragraphs: ["We do not sell your data and we never give advertisers your account details, messages or chat history. We show ads from Adsterra, an advertising network. When a page with an ad loads, the network's code runs in your browser and the network can see your IP address, device and browser details and set its own cookies, as on any website with ads. It does not receive your account, your email or anything you type in a chat. We use hosting and infrastructure providers to run Anonmee, and they process data only on our instructions. We may share information with the authorities when the law requires it or to protect someone from serious harm, and we will tell you when we are allowed to."] },
   { heading: "Where your data is processed", paragraphs: ["Anonmee is run from the servers of our hosting providers, which may be in a different country from yours. Wherever it is processed, we protect it in the same ways described here."] },
   { heading: "How we protect it", paragraphs: ["Connections are encrypted. Passwords are hashed. Login sessions are short and renew themselves. We limit and log staff access, and we test our security. No online service can promise perfect security, so we also keep to the minimum data, which limits what could ever be exposed."] },
   { heading: "Your rights", paragraphs: ["You can ask to see the data we hold about you, correct it, or delete it. You can delete your account yourself from the Me page, with your password. You can also object to or limit how we use your data, and you can complain to the data protection authority where you live. See the Your data page for how, or write to us."] },
@@ -74,7 +74,7 @@ export const TERMS_SECTIONS: ProseSection[] = [
 ];
 
 export const COOKIE_SECTIONS: ProseSection[] = [
-  { heading: "The short version", paragraphs: ["We use only the small files and storage the service needs to work, plus one anonymous counter for our own visit counts. No advertising, no social-media trackers, no third-party analytics."] },
+  { heading: "The short version", paragraphs: ["We use only the small files and storage the service needs to work, plus one anonymous counter for our own visit counts. Ads on some pages come from a third-party network (Adsterra), which can set its own cookies. We have no social-media trackers."] },
   {
     heading: "What we set",
     paragraphs: [],
@@ -82,10 +82,11 @@ export const COOKIE_SECTIONS: ProseSection[] = [
       "Login cookies (access and refresh): keep you signed in. Essential. They are private to the browser and cannot be read by scripts on the page.",
       "Visitor counter (vid): a random number that lets us count visits to our public pages without knowing who you are. It lasts 30 days. We do not set it if your browser sends Do Not Track or Global Privacy Control.",
       "Your theme choice (stored on your device): remembers light or dark. Never sent to us.",
+      "Ad network cookies (Adsterra): set by the ad network, not by us, on pages that show ads. They are used to pick and count ads. We do not show ads on the sign-in and sign-up forms, in live chats or in the staff console. You can block them in your browser settings or with an ad blocker.",
       "A note of which public pages you have opened this session (stored on your device): stops us counting a reload twice. It disappears when you close the tab.",
     ],
   },
-  { heading: "Choices", paragraphs: ["You can clear or block cookies in your browser settings. If you block the login cookies you will not be able to stay signed in. Turning on Do Not Track or Global Privacy Control stops the visitor counter."] },
+  { heading: "Choices", paragraphs: ["You can clear or block cookies in your browser settings, and an ad blocker will stop the ads. If you block the login cookies you will not be able to stay signed in. Turning on Do Not Track or Global Privacy Control stops the visitor counter."] },
   { heading: "Changes", paragraphs: [`If this ever changes, for example if we add something new, we will update this page first. Questions: ${C.support}.`] },
 ];
 

@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
+import { Suspense } from "react";
 import Script from "next/script";
 import { Archivo, Geist, Geist_Mono } from "next/font/google";
+import { AdScripts } from "@/components/shared/ad-scripts";
 import { SITE } from "@/lib/site";
 import "./globals.css";
 
@@ -166,6 +168,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           dangerouslySetInnerHTML={{ __html: JSON.stringify(GLOBAL_SCHEMA).replace(/</g, "\\u003c") }}
         />
         {children}
+        {/* Adsterra popunder and social bar. Skips admin, auth and live chat routes (see lib/ads.ts). */}
+        <Suspense fallback={null}>
+          <AdScripts />
+        </Suspense>
       </body>
     </html>
   );

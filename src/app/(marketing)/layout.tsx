@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Footer } from "@/components/layout/footer";
 import { Navbar } from "@/components/layout/navbar";
+import { AdBanner } from "@/components/shared/ad-banner";
+import { AdNativeBanner } from "@/components/shared/ad-native-banner";
 import { VisitTracker } from "@/features/landing/components/visit-tracker";
 import { SITE } from "@/lib/site";
 
@@ -61,6 +64,12 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
     <>
       <Navbar />
       <main className="flex-1">{children}</main>
+      <div className="mx-auto w-full max-w-5xl space-y-6 px-4 py-8">
+        <Suspense fallback={null}>
+          <AdBanner />
+          <AdNativeBanner />
+        </Suspense>
+      </div>
       <Footer />
       <VisitTracker />
     </>

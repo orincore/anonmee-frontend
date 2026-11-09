@@ -71,7 +71,7 @@ export function Footer() {
           <div className="space-y-3">
             <Logo tone="inverse" imageClassName="h-9 sm:h-10 max-w-[200px]" />
             <p className="max-w-md text-[15px] leading-relaxed opacity-80">
-              The anonymous social network for dating, real friendship, and stranger chat. No photos, no swipe fatigue, zero tracking. Connect by personality and intent.
+              The anonymous social network for dating, real friendship, and stranger chat. No photos, no swipe fatigue. Connect by personality and intent.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2 md:justify-end">
